@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import ChalkboardTexture from './ChalkboardTexture'
+import FloatingDust from './FloatingDust'
+import ChalkDoodles from './ChalkDoodles'
 
 const memories = [
   {
@@ -78,6 +80,8 @@ export default function MemoryJourney() {
   return (
     <section className="relative py-20 px-6 bg-[#1e4a1e]" style={{ background: 'linear-gradient(180deg, #1e4a1e 0%, #234d20 50%, #1e4a1e 100%)' }}>
       <ChalkboardTexture />
+      <FloatingDust count={20} />
+      <ChalkDoodles indices={[2, 3, 5]} />
 
       <div className="max-w-2xl mx-auto relative">
         <h2 className="font-[Caveat] text-4xl md:text-5xl text-white text-center font-bold mb-4"

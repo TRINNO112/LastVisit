@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import ChalkboardTexture from './ChalkboardTexture'
+import FloatingDust from './FloatingDust'
+import ChalkDoodles from './ChalkDoodles'
 
 export default function FarewellQuote() {
   const ref = useRef(null)
@@ -17,6 +19,8 @@ export default function FarewellQuote() {
   return (
     <section className="relative py-24 px-6 bg-[#1e4a1e]">
       <ChalkboardTexture />
+      <FloatingDust count={25} />
+      <ChalkDoodles indices={[0, 1, 3]} />
 
       <div
         ref={ref}
