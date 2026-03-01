@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import ChalkboardTexture from './ChalkboardTexture'
 
 const messages = [
   {
@@ -81,7 +82,7 @@ function Card({ data, index }) {
 export default function MessageCards() {
   return (
     <section className="relative py-20 px-6 bg-[#2d5a27]">
-      <div className="absolute inset-0 opacity-5 bg-[radial-gradient(circle,white_1px,transparent_1px)] bg-[length:25px_25px]" />
+      <ChalkboardTexture />
 
       <div className="max-w-5xl mx-auto relative">
         <h2 className="font-[Caveat] text-4xl md:text-5xl text-white text-center font-bold mb-4"

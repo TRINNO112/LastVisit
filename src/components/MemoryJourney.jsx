@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import ChalkboardTexture from './ChalkboardTexture'
 
 const memories = [
   {
@@ -75,9 +76,8 @@ function MemoryItem({ memory, index }) {
 
 export default function MemoryJourney() {
   return (
-    <section className="relative py-20 px-6 bg-[#1e4a1e]">
-      {/* Subtle chalk texture */}
-      <div className="absolute inset-0 opacity-5 bg-[radial-gradient(circle,white_1px,transparent_1px)] bg-[length:20px_20px]" />
+    <section className="relative py-20 px-6 bg-[#1e4a1e]" style={{ background: 'linear-gradient(180deg, #1e4a1e 0%, #234d20 50%, #1e4a1e 100%)' }}>
+      <ChalkboardTexture />
 
       <div className="max-w-2xl mx-auto relative">
         <h2 className="font-[Caveat] text-4xl md:text-5xl text-white text-center font-bold mb-4"

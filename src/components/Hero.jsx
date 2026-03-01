@@ -1,18 +1,39 @@
 import { useEffect, useState } from 'react'
 
-const ChalkDust = () => (
-  <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-10" xmlns="http://www.w3.org/2000/svg">
-    {Array.from({ length: 30 }).map((_, i) => (
-      <circle
-        key={i}
-        cx={`${Math.random() * 100}%`}
-        cy={`${Math.random() * 100}%`}
-        r={Math.random() * 2 + 0.5}
-        fill="white"
-      />
-    ))}
-  </svg>
-)
+function ChalkboardTexture() {
+  return (
+    <>
+      {/* Base grain texture */}
+      <svg className="absolute inset-0 w-full h-full pointer-events-none" xmlns="http://www.w3.org/2000/svg">
+        <filter id="chalkNoise">
+          <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" stitchTiles="stitch" />
+          <feColorMatrix type="saturate" values="0" />
+        </filter>
+        <rect width="100%" height="100%" filter="url(#chalkNoise)" opacity="0.06" />
+      </svg>
+      {/* Chalk dust specks */}
+      <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-[0.07]" xmlns="http://www.w3.org/2000/svg">
+        {Array.from({ length: 60 }).map((_, i) => (
+          <circle
+            key={i}
+            cx={`${Math.random() * 100}%`}
+            cy={`${Math.random() * 100}%`}
+            r={Math.random() * 1.5 + 0.3}
+            fill="white"
+          />
+        ))}
+      </svg>
+      {/* Subtle eraser smudges */}
+      <div className="absolute top-[20%] left-[10%] w-40 h-8 bg-white/[0.02] rounded-full blur-md rotate-[-5deg]" />
+      <div className="absolute top-[60%] right-[15%] w-32 h-6 bg-white/[0.02] rounded-full blur-md rotate-[3deg]" />
+      <div className="absolute bottom-[30%] left-[40%] w-48 h-6 bg-white/[0.015] rounded-full blur-lg rotate-[-2deg]" />
+      {/* Faint chalk line scratches */}
+      <div className="absolute top-[15%] left-0 right-0 h-[1px] bg-white/[0.03]" />
+      <div className="absolute top-[45%] left-[5%] right-[10%] h-[1px] bg-white/[0.02] rotate-[0.5deg]" />
+      <div className="absolute top-[75%] left-[8%] right-[5%] h-[1px] bg-white/[0.025]" />
+    </>
+  )
+}
 
 function ChalkText({ text, className, style }) {
   const [visibleCount, setVisibleCount] = useState(0)
@@ -22,9 +43,8 @@ function ChalkText({ text, className, style }) {
     if (visibleCount >= text.length) return
     const timeout = setTimeout(() => {
       setVisibleCount((c) => c + 1)
-      // Spawn chalk dust particles at the current letter
       setDustParticles((prev) => [
-        ...prev.slice(-15), // keep last 15
+        ...prev.slice(-15),
         ...Array.from({ length: 3 }).map((_, i) => ({
           id: Date.now() + i,
           x: (visibleCount / text.length) * 100,
@@ -54,7 +74,6 @@ function ChalkText({ text, className, style }) {
           </span>
         ))}
       </h1>
-      {/* Chalk dust particles */}
       {dustParticles.map((p) => (
         <div
           key={p.id}
@@ -81,20 +100,26 @@ export default function Hero() {
   }, [])
 
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center px-6 overflow-hidden bg-[#2d5a27]">
-      <ChalkDust />
+    <section className="relative min-h-screen flex flex-col items-center justify-center px-6 overflow-hidden bg-[#2d5a27]"
+      style={{ background: 'linear-gradient(145deg, #2d5a27 0%, #1e4a1e 30%, #2a5525 60%, #234d20 100%)' }}>
+      <ChalkboardTexture />
 
-      {/* Chalkboard border */}
-      <div className="absolute inset-4 border-8 border-[#8B6914] rounded-lg shadow-[inset_0_0_30px_rgba(0,0,0,0.3)] pointer-events-none" />
+      {/* Wooden frame border with inner shadow */}
+      <div className="absolute inset-3 border-[10px] border-[#6B4F1D] rounded-md pointer-events-none"
+        style={{
+          boxShadow: 'inset 0 0 40px rgba(0,0,0,0.4), inset 0 0 80px rgba(0,0,0,0.15), 0 4px 20px rgba(0,0,0,0.5)',
+          borderImage: 'linear-gradient(135deg, #8B6914 0%, #6B4F1D 30%, #A07B28 50%, #6B4F1D 70%, #8B6914 100%) 1',
+        }} />
+      {/* Inner chalk tray shadow at bottom */}
+      <div className="absolute bottom-3 left-3 right-3 h-6 bg-gradient-to-t from-[#5a3e14] to-transparent pointer-events-none rounded-b-md" />
 
       {/* Chalk illustrations */}
       <div className="absolute top-8 left-10 text-white/20 text-6xl select-none">✿</div>
       <div className="absolute top-12 right-14 text-white/20 text-4xl select-none">★</div>
-      <div className="absolute bottom-16 left-16 text-white/15 text-5xl select-none">📖</div>
-      <div className="absolute bottom-12 right-12 text-white/20 text-4xl select-none">♡</div>
+      <div className="absolute bottom-20 left-16 text-white/15 text-5xl select-none">📖</div>
+      <div className="absolute bottom-16 right-12 text-white/20 text-4xl select-none">♡</div>
 
-      <div className={`transition-all duration-1000 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-        {/* Chalk-style divider */}
+      <div className={`relative z-10 transition-all duration-1000 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
         <div className="flex items-center justify-center gap-4 mb-6">
           <div className="w-16 h-[2px] bg-white/40" />
           <span className="text-white/50 font-[Caveat] text-2xl">Thank You</span>
@@ -102,7 +127,7 @@ export default function Hero() {
         </div>
 
         <ChalkText
-          text="Momita Ghosh"
+          text="Momita Ma'am"
           className="font-[Caveat] text-6xl md:text-8xl text-white text-center font-bold leading-tight tracking-wide"
           style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.3), 0 0 20px rgba(255,255,255,0.1)' }}
         />
@@ -110,10 +135,9 @@ export default function Hero() {
         <p className={`font-['Patrick_Hand'] text-xl md:text-2xl text-white/70 text-center mt-6 max-w-xl mx-auto leading-relaxed transition-all duration-1000 delay-[1500ms] ${visible ? 'opacity-100' : 'opacity-0'}`}>
           Our beloved Accounts teacher who made numbers feel like stories.
           <br />
-          <span className="text-white/50 text-lg">Grade 11 & 12 &bull; Morbi, Gujarat</span>
+          <span className="text-white/50 text-lg">Grade 11 & 12 &bull; OSEM, Morbi</span>
         </p>
 
-        {/* Chalk eraser smudge effect */}
         <div className="mt-10 flex justify-center">
           <div className="w-32 h-1 bg-white/20 rounded-full blur-sm" />
         </div>
@@ -123,7 +147,6 @@ export default function Hero() {
         </p>
       </div>
 
-      {/* Keyframe for chalk dust */}
       <style>{`
         @keyframes fadeUp {
           0% { opacity: 0.8; transform: translate(0, 0); }

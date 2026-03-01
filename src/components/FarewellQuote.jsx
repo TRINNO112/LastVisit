@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import ChalkboardTexture from './ChalkboardTexture'
 
 export default function FarewellQuote() {
   const ref = useRef(null)
@@ -15,7 +16,7 @@ export default function FarewellQuote() {
 
   return (
     <section className="relative py-24 px-6 bg-[#1e4a1e]">
-      <div className="absolute inset-0 opacity-5 bg-[radial-gradient(circle,white_1px,transparent_1px)] bg-[length:20px_20px]" />
+      <ChalkboardTexture />
 
       <div
         ref={ref}
@@ -59,9 +60,14 @@ export default function FarewellQuote() {
           <p className="font-['Patrick_Hand'] text-sm text-white/25">
             Made with ♡ by her students
           </p>
-          <p className="font-[Caveat] text-lg text-white/20 mt-2 italic">
-            {/* TODO: Replace this with your Hinglish message */}
-            Developer's note: Yahan apna Hinglish message daalo — tumhare dil se, Ma'am ke liye.
+          <p className="font-[Caveat] text-lg text-white/40 mt-4 italic leading-relaxed whitespace-pre-line text-left max-w-2xl mx-auto">
+            Mujhe lagta hai shayad yeh aapke liye mera aakhri message hoga, kyunki aap ab Morbi se jaa rahe ho. Main dil se umeed karta hoon ki aapka jo sapna hai Professor banne ka, woh zaroor poora ho. Humein aapki bahut yaad aayegi.
+            {'\n\n'}
+            Aapne hume Accounts padhaya aur bahut saari important cheezein sikhayi. Ab jab aap jaa rahe ho, toh aisa lag raha hai jaise kuch important humse door ho raha hai. Waise toh hum aapko zyada kuch de nahi sakte, lekin maine yeh page isliye banaya hai taaki hum aapke liye ek chhota sa message chhod sake.
+            {'\n\n'}
+            Bas itna hi kehna tha ki aap hamare liye bahut acche teacher rahe ho. Aapki yaad hamesha aayegi. Aur kabhi bhi agar aapko hamari yaad aaye, toh is page ko zaroor open kar lena. Yeh hamesha online rahega — bas link save karke rakh lena.
+            {'\n\n'}
+            Main aur kya bolun… bas dil se thank you, Ma'am.
           </p>
         </div>
       </div>

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import ChalkboardTexture from './ChalkboardTexture'
 
 const assets = [
   { particular: 'Memories with Ma\'am', amount: '∞' },
@@ -49,8 +50,8 @@ export default function BalanceSheet() {
   }, [])
 
   return (
-    <section className="relative py-20 px-6 bg-[#2d5a27]">
-      <div className="absolute inset-0 opacity-5 bg-[radial-gradient(circle,white_1px,transparent_1px)] bg-[length:25px_25px]" />
+    <section className="relative py-20 px-6 bg-[#2d5a27]" style={{ background: 'linear-gradient(180deg, #2a5525 0%, #2d5a27 50%, #2a5525 100%)' }}>
+      <ChalkboardTexture />
 
       <div ref={ref} className="max-w-4xl mx-auto relative">
         <h2 className="font-[Caveat] text-4xl md:text-5xl text-white text-center font-bold mb-2"
