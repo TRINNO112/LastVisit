@@ -3,28 +3,38 @@ import { useEffect, useRef, useState } from 'react'
 const memories = [
   {
     icon: '📚',
-    title: 'The Beginning',
-    text: 'When Ma\'am Momita first walked into our Grade 11 classroom in Morbi and made accounting feel less scary.',
+    title: 'The First Impression',
+    text: 'When Ma\'am Momita first walked into our Grade 11 classroom at OSEM, it was honestly a bit strange. Her teaching style was completely different from what we were used to. We didn\'t really know what to make of it at first.',
+  },
+  {
+    icon: '💡',
+    title: 'Slowly, It All Clicked',
+    text: 'But as days went by, we started adapting. She didn\'t just teach us what to write — she explained why things worked the way they did. Why journal entries happen, why debits and credits exist, the logic behind every concept. It all started making sense.',
   },
   {
     icon: '✏️',
-    title: 'Accounts Made Simple',
-    text: 'Those journal entries, balance sheets, and trial balances — she turned the toughest chapters into our favorites.',
+    title: 'Concepts, Not Just Answers',
+    text: 'She introduced us to various types of questions and concepts we\'d never encountered before. It wasn\'t about memorizing — it was about truly understanding. She made sure we knew the reasoning behind every single entry.',
   },
   {
-    icon: '😂',
-    title: 'The Fun Moments',
-    text: 'The times she cracked jokes between debits and credits, making sure nobody ever dozed off in class.',
+    icon: '🌟',
+    title: 'Stories That Inspired Us',
+    text: 'She would often share stories from her own life — how she got to where she is, the challenges she faced. These stories truly inspired us, because we couldn\'t imagine achieving what she did at such a young age.',
   },
   {
-    icon: '💛',
-    title: 'A Teacher Who Cared',
-    text: 'She never just taught from the book. She made sure every single one of us understood — no student left behind.',
+    icon: '🤝',
+    title: 'A Teacher Who Truly Cared',
+    text: 'She always asked every single student about their doubts — nobody was left behind. She listened to our grievances and played a vital support role, not just as a teacher, but as someone who genuinely cared about each one of us.',
+  },
+  {
+    icon: '🏢',
+    title: 'Grade 12 — Company Accounts',
+    text: 'As we entered Grade 12, she took us through Company Accounts — the very first chapter of the NCERT. Even the complex stuff felt manageable with her guidance.',
   },
   {
     icon: '🚂',
     title: 'Heading Back to Kolkata',
-    text: 'As Grade 12 begins, Ma\'am heads home to Kolkata. Morbi will miss her, but Kolkata is lucky to have her back.',
+    text: 'And now, she\'s heading back home to Kolkata where she originally belongs. OSEM is losing one of its best teachers. But wherever she goes, she\'ll always be our Ma\'am.',
   },
 ]
 

@@ -37,10 +37,13 @@ export default function FarewellQuote() {
 
         <div className="mt-14 space-y-3">
           <p className="font-[Caveat] text-2xl text-[#f5e6a3]">
-            We will miss you, Momita Ma'am 💛
+            We will miss you, Momita Ma'am
           </p>
           <p className="font-['Patrick_Hand'] text-lg text-white/40">
             From your students in Morbi, with love — to Kolkata, with pride.
+          </p>
+          <p className="font-['Patrick_Hand'] text-base text-white/30 mt-2">
+            Remember us, Ma'am. Whenever you visit this page — here we are.
           </p>
         </div>
 
@@ -51,9 +54,16 @@ export default function FarewellQuote() {
           <div className="w-20 h-[1px] bg-white/30" />
         </div>
 
-        <p className="font-['Patrick_Hand'] text-sm text-white/20 mt-10">
-          Made with ♡ by her students
-        </p>
+        {/* Developer note - placeholder for Hinglish message */}
+        <div className="mt-16 pt-8 border-t border-white/10">
+          <p className="font-['Patrick_Hand'] text-sm text-white/25">
+            Made with ♡ by her students
+          </p>
+          <p className="font-[Caveat] text-lg text-white/20 mt-2 italic">
+            {/* TODO: Replace this with your Hinglish message */}
+            Developer's note: Yahan apna Hinglish message daalo — tumhare dil se, Ma'am ke liye.
+          </p>
+        </div>
       </div>
     </section>
   )
