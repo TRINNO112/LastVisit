@@ -21,7 +21,7 @@ export default function ChalkWipe() {
     <div ref={ref} className="relative h-24 overflow-hidden" style={{ background: 'linear-gradient(180deg, transparent, rgba(0,0,0,0.15), transparent)' }}>
       {/* Chalk dust line */}
       <div
-        className="absolute top-1/2 left-0 h-[2px] bg-white/20 transition-all duration-1000 ease-out"
+        className="absolute top-1/2 left-0 h-[4px] bg-white/40 transition-all duration-1000 ease-out"
         style={{ width: progress ? '100%' : '0%' }}
       />
 
@@ -32,11 +32,11 @@ export default function ChalkWipe() {
             key={i}
             cx={`${(i / 20) * 100}%`}
             cy={`${45 + (Math.random() - 0.5) * 30}%`}
-            r={Math.random() * 2 + 0.5}
+            r={Math.random() * 3 + 1}
             fill="white"
             className="transition-opacity duration-700"
             style={{
-              opacity: progress ? 0.15 : 0,
+              opacity: progress ? 0.35 : 0,
               transitionDelay: `${i * 50}ms`,
             }}
           />
@@ -45,7 +45,7 @@ export default function ChalkWipe() {
 
       {/* Eraser smudge */}
       <div
-        className="absolute top-1/2 -translate-y-1/2 h-12 bg-white/[0.03] rounded-full blur-lg transition-all duration-[1500ms] ease-out"
+        className="absolute top-1/2 -translate-y-1/2 h-12 bg-white/[0.08] rounded-full blur-lg transition-all duration-[1500ms] ease-out"
         style={{
           left: progress ? '0%' : '-10%',
           width: progress ? '100%' : '0%',

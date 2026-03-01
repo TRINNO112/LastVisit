@@ -1,4 +1,7 @@
 import { useEffect, useState } from 'react'
+import FloatingDust from './FloatingDust'
+import ChalkDoodles from './ChalkDoodles'
+import useParallax from '../hooks/useParallax'
 
 function ChalkboardTexture() {
   return (
@@ -9,16 +12,16 @@ function ChalkboardTexture() {
           <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" stitchTiles="stitch" />
           <feColorMatrix type="saturate" values="0" />
         </filter>
-        <rect width="100%" height="100%" filter="url(#chalkNoise)" opacity="0.06" />
+        <rect width="100%" height="100%" filter="url(#chalkNoise)" opacity="0.12" />
       </svg>
       {/* Chalk dust specks */}
-      <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-[0.07]" xmlns="http://www.w3.org/2000/svg">
+      <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-[0.15]" xmlns="http://www.w3.org/2000/svg">
         {Array.from({ length: 60 }).map((_, i) => (
           <circle
             key={i}
             cx={`${Math.random() * 100}%`}
             cy={`${Math.random() * 100}%`}
-            r={Math.random() * 1.5 + 0.3}
+            r={Math.random() * 2 + 0.5}
             fill="white"
           />
         ))}
@@ -45,12 +48,12 @@ function ChalkText({ text, className, style }) {
       setVisibleCount((c) => c + 1)
       setDustParticles((prev) => [
         ...prev.slice(-15),
-        ...Array.from({ length: 3 }).map((_, i) => ({
+        ...Array.from({ length: 5 }).map((_, i) => ({
           id: Date.now() + i,
           x: (visibleCount / text.length) * 100,
           offsetX: (Math.random() - 0.5) * 30,
           offsetY: -(Math.random() * 40 + 10),
-          size: Math.random() * 3 + 1,
+          size: Math.random() * 3 + 3,
         })),
       ])
     }, 100)
@@ -77,7 +80,7 @@ function ChalkText({ text, className, style }) {
       {dustParticles.map((p) => (
         <div
           key={p.id}
-          className="absolute w-1 h-1 bg-white/40 rounded-full animate-[fadeUp_0.8s_ease-out_forwards]"
+          className="absolute rounded-full chalk-dust bg-white/70"
           style={{
             left: `${p.x}%`,
             top: '50%',
@@ -94,15 +97,18 @@ function ChalkText({ text, className, style }) {
 
 export default function Hero() {
   const [visible, setVisible] = useState(false)
+  const { ref: parallaxRef, offset } = useParallax(0.12)
 
   useEffect(() => {
     setTimeout(() => setVisible(true), 200)
   }, [])
 
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center px-6 overflow-hidden bg-[#2d5a27]"
+    <section ref={parallaxRef} className="relative min-h-screen flex flex-col items-center justify-center px-6 overflow-hidden bg-[#2d5a27]"
       style={{ background: 'linear-gradient(145deg, #2d5a27 0%, #1e4a1e 30%, #2a5525 60%, #234d20 100%)' }}>
       <ChalkboardTexture />
+      <FloatingDust count={30} />
+      <ChalkDoodles indices={[0, 1, 4]} />
 
       {/* Wooden frame border with inner shadow */}
       <div className="absolute inset-3 border-[10px] border-[#6B4F1D] rounded-md pointer-events-none"
@@ -113,11 +119,13 @@ export default function Hero() {
       {/* Inner chalk tray shadow at bottom */}
       <div className="absolute bottom-3 left-3 right-3 h-6 bg-gradient-to-t from-[#5a3e14] to-transparent pointer-events-none rounded-b-md" />
 
-      {/* Chalk illustrations */}
-      <div className="absolute top-8 left-10 text-white/20 text-6xl select-none">✿</div>
-      <div className="absolute top-12 right-14 text-white/20 text-4xl select-none">★</div>
-      <div className="absolute bottom-20 left-16 text-white/15 text-5xl select-none">📖</div>
-      <div className="absolute bottom-16 right-12 text-white/20 text-4xl select-none">♡</div>
+      {/* Chalk illustrations with parallax */}
+      <div style={{ transform: `translateY(${offset}px)` }}>
+        <div className="absolute top-8 left-10 text-white/20 text-6xl select-none">✿</div>
+        <div className="absolute top-12 right-14 text-white/20 text-4xl select-none">★</div>
+        <div className="absolute bottom-20 left-16 text-white/15 text-5xl select-none">📖</div>
+        <div className="absolute bottom-16 right-12 text-white/20 text-4xl select-none">♡</div>
+      </div>
 
       <div className={`relative z-10 transition-all duration-1000 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
         <div className="flex items-center justify-center gap-4 mb-6">
@@ -146,13 +154,6 @@ export default function Hero() {
           ↓ scroll down ↓
         </p>
       </div>
-
-      <style>{`
-        @keyframes fadeUp {
-          0% { opacity: 0.8; transform: translate(0, 0); }
-          100% { opacity: 0; transform: translate(var(--dx), var(--dy)); }
-        }
-      `}</style>
     </section>
   )
 }

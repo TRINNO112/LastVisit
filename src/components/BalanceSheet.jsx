@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import ChalkboardTexture from './ChalkboardTexture'
+import FloatingDust from './FloatingDust'
 
 const assets = [
   { particular: 'Memories with Ma\'am', amount: '∞' },
@@ -20,6 +21,58 @@ const capital = [
   { particular: 'Love & Respect for Ma\'am (Capital)', amount: '∞' },
 ]
 
+// Format number with Indian comma system (1,00,000)
+function formatIndian(num) {
+  const s = Math.floor(num).toString()
+  if (s.length <= 3) return s
+  let result = s.slice(-3)
+  let remaining = s.slice(0, -3)
+  while (remaining.length > 0) {
+    result = remaining.slice(-2) + ',' + result
+    remaining = remaining.slice(0, -2)
+  }
+  return result
+}
+
+function CountUp({ target, visible }) {
+  const [display, setDisplay] = useState('0')
+
+  useEffect(() => {
+    if (!visible) return
+    if (target === '∞') {
+      setDisplay('∞')
+      return
+    }
+
+    const numeric = parseInt(target.replace(/,/g, ''), 10)
+    if (isNaN(numeric)) {
+      setDisplay(target)
+      return
+    }
+
+    const duration = 1500
+    const start = performance.now()
+
+    function tick(now) {
+      const elapsed = now - start
+      const progress = Math.min(elapsed / duration, 1)
+      // Ease out cubic
+      const eased = 1 - Math.pow(1 - progress, 3)
+      const current = Math.floor(numeric * eased)
+      setDisplay(formatIndian(current))
+      if (progress < 1) {
+        requestAnimationFrame(tick)
+      } else {
+        setDisplay(target)
+      }
+    }
+
+    requestAnimationFrame(tick)
+  }, [visible, target])
+
+  return <>{display}</>
+}
+
 function AnimatedRow({ item, index, visible }) {
   return (
     <tr
@@ -30,7 +83,7 @@ function AnimatedRow({ item, index, visible }) {
         {item.particular}
       </td>
       <td className="font-[Caveat] text-[#f5e6a3] text-xl py-2 text-right border-b border-white/10 tabular-nums">
-        {item.amount}
+        <CountUp target={item.amount} visible={visible} />
       </td>
     </tr>
   )
@@ -52,6 +105,7 @@ export default function BalanceSheet() {
   return (
     <section className="relative py-20 px-6 bg-[#2d5a27]" style={{ background: 'linear-gradient(180deg, #2a5525 0%, #2d5a27 50%, #2a5525 100%)' }}>
       <ChalkboardTexture />
+      <FloatingDust count={20} />
 
       <div ref={ref} className="max-w-4xl mx-auto relative">
         <h2 className="font-[Caveat] text-4xl md:text-5xl text-white text-center font-bold mb-2"

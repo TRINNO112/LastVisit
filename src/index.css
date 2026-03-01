@@ -5,3 +5,51 @@ body {
   margin: 0;
   min-height: 100vh;
 }
+
+@keyframes fadeUp {
+  0% { opacity: 0.7; transform: translate(0, 0); filter: blur(1px); }
+  100% { opacity: 0; transform: translate(var(--dx), var(--dy)); filter: blur(3px); }
+}
+
+.chalk-dust {
+  animation: fadeUp 0.8s ease-out forwards;
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(0) translateX(0);
+    opacity: var(--particle-opacity, 0.15);
+  }
+  50% {
+    transform: translateY(-50vh) translateX(var(--sway, 20px));
+    opacity: var(--particle-opacity, 0.15);
+  }
+  100% {
+    transform: translateY(-100vh) translateX(calc(var(--sway, 20px) * -0.5));
+    opacity: 0;
+  }
+}
+
+.floating-dust {
+  animation: floatUp linear infinite;
+}
+
+@keyframes doodleDraw {
+  from { stroke-dashoffset: 100; }
+  to { stroke-dashoffset: 0; }
+}
+
+.chalk-doodle-draw {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: doodleDraw 2s ease-out forwards;
+}
+
+@keyframes cursorBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.typing-cursor {
+  animation: cursorBlink 0.7s step-end infinite;
+}

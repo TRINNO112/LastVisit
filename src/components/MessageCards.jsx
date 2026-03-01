@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import ChalkboardTexture from './ChalkboardTexture'
+import FloatingDust from './FloatingDust'
 
 const messages = [
   {
@@ -31,7 +32,9 @@ const messages = [
 
 function Card({ data, index }) {
   const ref = useRef(null)
+  const cardRef = useRef(null)
   const [visible, setVisible] = useState(false)
+  const [tilt, setTilt] = useState({ x: 0, y: 0 })
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -42,7 +45,20 @@ function Card({ data, index }) {
     return () => observer.disconnect()
   }, [])
 
-  // Slight random rotation for a pinned-note feel
+  const handleMouseMove = useCallback((e) => {
+    if (!cardRef.current) return
+    const rect = cardRef.current.getBoundingClientRect()
+    const cx = rect.left + rect.width / 2
+    const cy = rect.top + rect.height / 2
+    const x = (e.clientX - cx) / (rect.width / 2)
+    const y = (e.clientY - cy) / (rect.height / 2)
+    setTilt({ x: y * -8, y: x * 8 })
+  }, [])
+
+  const handleMouseLeave = useCallback(() => {
+    setTilt({ x: 0, y: 0 })
+  }, [])
+
   const rotations = [-2, 1.5, -1, 2, -1.5]
   const rotation = rotations[index % rotations.length]
 
@@ -50,11 +66,20 @@ function Card({ data, index }) {
     <div
       ref={ref}
       className={`transition-all duration-700 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}
-      style={{ transitionDelay: `${index * 150}ms` }}
+      style={{ transitionDelay: `${index * 150}ms`, perspective: '800px' }}
     >
       <div
-        className="bg-[#3a6b35] border-2 border-white/15 rounded-lg p-6 shadow-lg hover:shadow-xl hover:scale-105 transition-transform duration-300 relative"
-        style={{ transform: `rotate(${rotation}deg)` }}
+        ref={cardRef}
+        className="bg-[#3a6b35] border-2 border-white/15 rounded-lg p-6 shadow-lg relative transition-all duration-200 cursor-default"
+        style={{
+          transform: `rotate(${rotation}deg) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
+          transformStyle: 'preserve-3d',
+          boxShadow: tilt.x || tilt.y
+            ? `${tilt.y * -2}px ${tilt.x * 2}px 20px rgba(0,0,0,0.3)`
+            : '0 10px 15px -3px rgba(0,0,0,0.1)',
+        }}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
       >
         {/* Pin */}
         <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-6 h-6 bg-red-400 rounded-full border-2 border-red-600 shadow-md" />
@@ -83,6 +108,7 @@ export default function MessageCards() {
   return (
     <section className="relative py-20 px-6 bg-[#2d5a27]">
       <ChalkboardTexture />
+      <FloatingDust count={20} />
 
       <div className="max-w-5xl mx-auto relative">
         <h2 className="font-[Caveat] text-4xl md:text-5xl text-white text-center font-bold mb-4"
