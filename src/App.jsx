@@ -1,16 +1,26 @@
 import Hero from './components/Hero'
-import MessageCards from './components/MessageCards'
+import ChalkWipe from './components/ChalkWipe'
 import MemoryJourney from './components/MemoryJourney'
+import MaamSaid from './components/MaamSaid'
 import BalanceSheet from './components/BalanceSheet'
+import MessageCards from './components/MessageCards'
 import FarewellQuote from './components/FarewellQuote'
+import AudioPlayer from './components/AudioPlayer'
 
 function App() {
   return (
     <div className="min-h-screen bg-[#2d5a27]">
+      <AudioPlayer />
       <Hero />
+      <ChalkWipe />
       <MemoryJourney />
+      <ChalkWipe />
+      <MaamSaid />
+      <ChalkWipe />
       <BalanceSheet />
+      <ChalkWipe />
       <MessageCards />
+      <ChalkWipe />
       <FarewellQuote />
     </div>
   )

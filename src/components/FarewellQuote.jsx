@@ -61,7 +61,7 @@ export default function FarewellQuote() {
             Made with ♡ by her students
           </p>
           <p className="font-[Caveat] text-lg text-white/40 mt-4 italic leading-relaxed whitespace-pre-line text-left max-w-2xl mx-auto">
-            Mujhe lagta hai shayad yeh aapke liye mera aakhri message hoga, kyunki aap ab Morbi se jaa rahe ho. Main dil se umeed karta hoon ki aapka jo sapna hai Professor banne ka, woh zaroor poora ho. Humein aapki bahut yaad aayegi.
+            Ma'am, mujhe lagta hai shayad yeh aapke liye mera aakhri message hoga, kyunki aap ab Morbi se jaa rahe ho. Main dil se umeed karta hoon ki aapka jo sapna hai Professor banne ka, woh zaroor poora ho. Humein aapki bahut yaad aayegi.
             {'\n\n'}
             Aapne hume Accounts padhaya aur bahut saari important cheezein sikhayi. Ab jab aap jaa rahe ho, toh aisa lag raha hai jaise kuch important humse door ho raha hai. Waise toh hum aapko zyada kuch de nahi sakte, lekin maine yeh page isliye banaya hai taaki hum aapke liye ek chhota sa message chhod sake.
             {'\n\n'}
