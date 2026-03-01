@@ -13,7 +13,7 @@ const assets = [
 const liabilities = [
   { particular: 'Incomplete Homework', amount: '5,000' },
   { particular: 'Times We Didn\'t Pay Attention', amount: '2,500' },
-  { particular: 'Unanswered Questions (sorry Ma\'am)', amount: '1,000' },
+  { particular: 'Times We Made Ma\'am Repeat Herself', amount: '1,000' },
   { particular: 'Classes We Wished Were Longer', amount: '50,000' },
 ]
 
@@ -50,7 +50,7 @@ function CountUp({ target, visible }) {
       return
     }
 
-    const duration = 1500
+    const duration = 3500
     const start = performance.now()
 
     function tick(now) {
