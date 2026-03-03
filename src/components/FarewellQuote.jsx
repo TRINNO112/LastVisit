@@ -3,6 +3,7 @@ import ChalkboardTexture from './ChalkboardTexture'
 import FloatingDust from './FloatingDust'
 import ChalkDoodles from './ChalkDoodles'
 import VisitCounter from './VisitCounter'
+import ShareButton from './ShareButton'
 
 export default function FarewellQuote() {
   const ref = useRef(null)
@@ -68,7 +69,10 @@ export default function FarewellQuote() {
         {/* Developer note - placeholder for Hinglish message */}
         <div className="mt-16 pt-8 border-t border-white/10">
           <p className="font-['Patrick_Hand'] text-sm text-white/25">
-            Made with ♡ by her students
+            Made with ♡ by Trinno
+          </p>
+          <p className="font-[Caveat] text-xl text-white/50 mt-6 mb-3">
+            A message from the student
           </p>
           <p className="font-[Caveat] text-lg text-white/40 mt-4 italic leading-relaxed whitespace-pre-line text-left max-w-2xl mx-auto">
             Ma'am, mujhe lagta hai shayad yeh aapke liye mera aakhri message hoga, kyunki aap ab Morbi se jaa rahe ho. Main dil se umeed karta hoon ki aapka jo sapna hai Professor banne ka, woh zaroor poora ho. Humein aapki bahut yaad aayegi.
@@ -79,6 +83,11 @@ export default function FarewellQuote() {
             {'\n\n'}
             Main aur kya bolun… bas dil se thank you, Ma'am.
           </p>
+        </div>
+
+        {/* Share buttons */}
+        <div className="mt-10 pt-8 border-t border-white/10">
+          <ShareButton />
         </div>
       </div>
     </section>

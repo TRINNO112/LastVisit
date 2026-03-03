@@ -13,11 +13,11 @@ function ChalkboardTexture() {
           <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" stitchTiles="stitch" />
           <feColorMatrix type="saturate" values="0" />
         </filter>
-        <rect width="100%" height="100%" filter="url(#chalkNoise)" opacity="0.12" />
+        <rect width="100%" height="100%" filter="url(#chalkNoise)" opacity="0.14" />
       </svg>
       {/* Chalk dust specks */}
-      <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-[0.15]" xmlns="http://www.w3.org/2000/svg">
-        {Array.from({ length: 60 }).map((_, i) => (
+      <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-[0.18]" xmlns="http://www.w3.org/2000/svg">
+        {Array.from({ length: 80 }).map((_, i) => (
           <circle
             key={i}
             cx={`${Math.random() * 100}%`}
@@ -27,14 +27,21 @@ function ChalkboardTexture() {
           />
         ))}
       </svg>
+      {/* Worn center area — lighter patch like a used chalkboard */}
+      <div className="absolute top-[30%] left-[20%] w-[60%] h-[40%] bg-white/[0.015] rounded-[50%] blur-3xl pointer-events-none" />
       {/* Subtle eraser smudges */}
-      <div className="absolute top-[20%] left-[10%] w-40 h-8 bg-white/[0.02] rounded-full blur-md rotate-[-5deg]" />
-      <div className="absolute top-[60%] right-[15%] w-32 h-6 bg-white/[0.02] rounded-full blur-md rotate-[3deg]" />
-      <div className="absolute bottom-[30%] left-[40%] w-48 h-6 bg-white/[0.015] rounded-full blur-lg rotate-[-2deg]" />
+      <div className="absolute top-[20%] left-[10%] w-40 h-8 bg-white/[0.03] rounded-full blur-md rotate-[-5deg]" />
+      <div className="absolute top-[60%] right-[15%] w-32 h-6 bg-white/[0.025] rounded-full blur-md rotate-[3deg]" />
+      <div className="absolute bottom-[30%] left-[40%] w-48 h-6 bg-white/[0.02] rounded-full blur-lg rotate-[-2deg]" />
+      <div className="absolute top-[40%] left-[60%] w-36 h-10 bg-white/[0.02] rounded-full blur-xl rotate-[8deg]" />
+      <div className="absolute top-[70%] left-[25%] w-28 h-5 bg-white/[0.025] rounded-full blur-lg rotate-[-3deg]" />
       {/* Faint chalk line scratches */}
       <div className="absolute top-[15%] left-0 right-0 h-[1px] bg-white/[0.03]" />
-      <div className="absolute top-[45%] left-[5%] right-[10%] h-[1px] bg-white/[0.02] rotate-[0.5deg]" />
-      <div className="absolute top-[75%] left-[8%] right-[5%] h-[1px] bg-white/[0.025]" />
+      <div className="absolute top-[45%] left-[5%] right-[10%] h-[1px] bg-white/[0.025] rotate-[0.5deg]" />
+      <div className="absolute top-[75%] left-[8%] right-[5%] h-[1px] bg-white/[0.03]" />
+      <div className="absolute top-[55%] left-[15%] right-[20%] h-[1px] bg-white/[0.02] rotate-[-0.3deg]" />
+      {/* Edge vignette for depth */}
+      <div className="absolute inset-0 pointer-events-none" style={{ boxShadow: 'inset 0 0 120px rgba(0,0,0,0.25)' }} />
     </>
   )
 }
@@ -122,11 +129,10 @@ export default function Hero() {
       <div className="absolute bottom-3 left-3 right-3 h-6 bg-gradient-to-t from-[#5a3e14] to-transparent pointer-events-none rounded-b-md" />
 
       {/* Chalk illustrations with parallax */}
-      <div style={{ transform: `translateY(${offset}px)` }}>
-        <div className="absolute top-8 left-10 text-white/20 text-6xl select-none">✿</div>
-        <div className="absolute top-12 right-14 text-white/20 text-4xl select-none">★</div>
-        <div className="absolute bottom-32 left-20 text-white/15 text-5xl select-none">📖</div>
-        <div className="absolute bottom-28 right-16 text-white/20 text-4xl select-none">♡</div>
+      <div className="absolute inset-0 z-[1]" style={{ transform: `translateY(${offset}px)` }}>
+        <div className="absolute top-[20%] left-[49%] text-white/20 text-6xl select-none animate-[gentleFloat_4s_ease-in-out_infinite]">✿</div>
+        <div className="absolute top-12 right-14 text-white/25 text-4xl select-none animate-[gentleFloat_5s_ease-in-out_infinite_0.5s]">★</div>
+        <div className="absolute bottom-28 right-16 text-white/25 text-4xl select-none animate-[gentleFloat_3.5s_ease-in-out_infinite_1s]">♡</div>
       </div>
 
       <div className={`relative z-10 transition-all duration-1000 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>

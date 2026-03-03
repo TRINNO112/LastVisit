@@ -7,8 +7,17 @@ body {
 }
 
 @keyframes fadeUp {
-  0% { opacity: 0.7; transform: translate(0, 0); filter: blur(1px); }
-  100% { opacity: 0; transform: translate(var(--dx), var(--dy)); filter: blur(3px); }
+  0% {
+    opacity: 0.7;
+    transform: translate(0, 0);
+    filter: blur(1px);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(var(--dx), var(--dy));
+    filter: blur(3px);
+  }
 }
 
 .chalk-dust {
@@ -20,10 +29,12 @@ body {
     transform: translateY(0) translateX(0);
     opacity: var(--particle-opacity, 0.15);
   }
+
   50% {
     transform: translateY(-50vh) translateX(var(--sway, 20px));
     opacity: var(--particle-opacity, 0.15);
   }
+
   100% {
     transform: translateY(-100vh) translateX(calc(var(--sway, 20px) * -0.5));
     opacity: 0;
@@ -35,8 +46,13 @@ body {
 }
 
 @keyframes doodleDraw {
-  from { stroke-dashoffset: 100; }
-  to { stroke-dashoffset: 0; }
+  from {
+    stroke-dashoffset: 100;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+  }
 }
 
 .chalk-doodle-draw {
@@ -46,12 +62,32 @@ body {
 }
 
 @keyframes cursorBlink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
 }
 
 .typing-cursor {
   animation: cursorBlink 0.7s step-end infinite;
+}
+
+/* Gentle floating animation for decorative elements */
+@keyframes gentleFloat {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 /* Petal animations */
@@ -60,12 +96,15 @@ body {
     transform: translateY(0);
     opacity: 0;
   }
+
   8% {
     opacity: 0.9;
   }
+
   70% {
     opacity: 0.8;
   }
+
   100% {
     transform: translateY(105vh);
     opacity: 0;
@@ -76,6 +115,7 @@ body {
   0% {
     transform: translateX(0);
   }
+
   100% {
     transform: translateX(var(--sway-amount, 40px));
   }
@@ -85,6 +125,7 @@ body {
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }

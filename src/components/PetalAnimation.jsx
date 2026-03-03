@@ -86,7 +86,7 @@ function Petal({ index, total }) {
 
 export default function PetalAnimation() {
     const [show, setShow] = useState(true)
-    const petalCount = 22
+    const petalCount = 32
 
     // Fade out the entire container after all petals have fallen
     useEffect(() => {
