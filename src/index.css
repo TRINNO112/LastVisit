@@ -53,3 +53,39 @@ body {
 .typing-cursor {
   animation: cursorBlink 0.7s step-end infinite;
 }
+
+/* Petal animations */
+@keyframes petalFall {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  8% {
+    opacity: 0.9;
+  }
+  70% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(105vh);
+    opacity: 0;
+  }
+}
+
+@keyframes petalSway {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(var(--sway-amount, 40px));
+  }
+}
+
+@keyframes petalSpin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

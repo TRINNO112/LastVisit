@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import ChalkboardTexture from './ChalkboardTexture'
 import FloatingDust from './FloatingDust'
 import ChalkDoodles from './ChalkDoodles'
+import VisitCounter from './VisitCounter'
 
 export default function FarewellQuote() {
   const ref = useRef(null)
@@ -57,6 +58,11 @@ export default function FarewellQuote() {
           <div className="w-20 h-[1px] bg-white/30" />
           <span className="text-white/30 text-2xl">✦</span>
           <div className="w-20 h-[1px] bg-white/30" />
+        </div>
+
+        {/* Visit Counter */}
+        <div className="mt-14 mb-8">
+          <VisitCounter />
         </div>
 
         {/* Developer note - placeholder for Hinglish message */}

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import FloatingDust from './FloatingDust'
 import ChalkDoodles from './ChalkDoodles'
+import PetalAnimation from './PetalAnimation'
 import useParallax from '../hooks/useParallax'
 
 function ChalkboardTexture() {
@@ -109,6 +110,7 @@ export default function Hero() {
       <ChalkboardTexture />
       <FloatingDust count={30} />
       <ChalkDoodles indices={[0, 1, 4]} />
+      <PetalAnimation />
 
       {/* Wooden frame border with inner shadow */}
       <div className="absolute inset-3 border-[10px] border-[#6B4F1D] rounded-md pointer-events-none"
@@ -123,8 +125,8 @@ export default function Hero() {
       <div style={{ transform: `translateY(${offset}px)` }}>
         <div className="absolute top-8 left-10 text-white/20 text-6xl select-none">✿</div>
         <div className="absolute top-12 right-14 text-white/20 text-4xl select-none">★</div>
-        <div className="absolute bottom-20 left-16 text-white/15 text-5xl select-none">📖</div>
-        <div className="absolute bottom-16 right-12 text-white/20 text-4xl select-none">♡</div>
+        <div className="absolute bottom-32 left-20 text-white/15 text-5xl select-none">📖</div>
+        <div className="absolute bottom-28 right-16 text-white/20 text-4xl select-none">♡</div>
       </div>
 
       <div className={`relative z-10 transition-all duration-1000 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
