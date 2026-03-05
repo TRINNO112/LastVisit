@@ -1,5 +1,8 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
 
+// Star color variation — warm, cool, and neutral
+const STAR_COLORS = ['#ffffff', '#ffffff', '#ffffff', '#ffe8c0', '#ffe8c0', '#c0d8ff', '#c0d8ff', '#fff5e0', '#d0e0ff']
+
 // Stable data generated once to ensure component purity
 const STARS_DATA = Array.from({ length: 100 }).map((_, i) => ({
     id: i,
@@ -9,7 +12,8 @@ const STARS_DATA = Array.from({ length: 100 }).map((_, i) => ({
     left: `${Math.random() * 100}%`,
     opacity: Math.random() * 0.5 + 0.2,
     duration: 3 + Math.random() * 5,
-    delay: Math.random() * 5
+    delay: Math.random() * 5,
+    color: STAR_COLORS[Math.floor(Math.random() * STAR_COLORS.length)]
 }))
 
 const TREES_X_POSITIONS = [80, 200, 330, 480, 600, 750, 880, 1020, 1150, 1280, 1380]
@@ -19,6 +23,23 @@ const TREE_DATA = TREES_X_POSITIONS.map((x, i) => {
     const w = 18 + (i % 2) * 4
     return { x, baseY, h, w, delay: i * 0.3 }
 })
+
+// Fireflies — gentle floating warm dots among the foreground
+const FIREFLIES_DATA = Array.from({ length: 12 }).map((_, i) => ({
+    id: i,
+    left: 5 + Math.random() * 90,
+    bottom: 15 + Math.random() * 35,
+    size: 2.5 + Math.random() * 2,
+    floatDuration: 6 + Math.random() * 8,
+    glowDuration: 3 + Math.random() * 4,
+    delay: Math.random() * 8,
+    dx: (Math.random() - 0.5) * 30,
+    dy: -(Math.random() * 20 + 5),
+    dx2: (Math.random() - 0.5) * 20,
+    dy2: -(Math.random() * 10 + 3),
+    dx3: (Math.random() - 0.5) * 25,
+    dy3: -(Math.random() * 18 + 8),
+}))
 
 export default function ParallaxMountains() {
     const containerRef = useRef(null)
@@ -114,13 +135,14 @@ export default function ParallaxMountains() {
                 {STARS_DATA.map((star) => (
                     <div
                         key={star.id}
-                        className="absolute rounded-full bg-white"
+                        className="absolute rounded-full"
                         style={{
                             width: star.width,
                             height: star.height,
                             top: star.top,
                             left: star.left,
                             opacity: star.opacity,
+                            backgroundColor: star.color,
                             animation: `twinkle ${star.duration}s ease-in-out infinite ${star.delay}s`,
                         }}
                     />
@@ -242,16 +264,40 @@ export default function ParallaxMountains() {
                 </svg>
             </div>
 
-            {/* Glowing Message Overlay */}
+            {/* Fireflies — floating warm glowing dots above the foreground */}
+            <div className="absolute inset-0 z-[5] pointer-events-none">
+                {FIREFLIES_DATA.map((ff) => (
+                    <div
+                        key={ff.id}
+                        className="absolute rounded-full"
+                        style={{
+                            left: `${ff.left}%`,
+                            bottom: `${ff.bottom}%`,
+                            width: ff.size,
+                            height: ff.size,
+                            backgroundColor: '#c8dc64',
+                            animation: `firefly-float ${ff.floatDuration}s ease-in-out infinite ${ff.delay}s, firefly-glow ${ff.glowDuration}s ease-in-out infinite ${ff.delay}s`,
+                            '--ff-dx': `${ff.dx}px`,
+                            '--ff-dy': `${ff.dy}px`,
+                            '--ff-dx2': `${ff.dx2}px`,
+                            '--ff-dy2': `${ff.dy2}px`,
+                            '--ff-dx3': `${ff.dx3}px`,
+                            '--ff-dy3': `${ff.dy3}px`,
+                        }}
+                    />
+                ))}
+            </div>
+
+            {/* Glowing Message Overlay — staggered reveal */}
             <div
                 className={`absolute inset-0 flex flex-col items-center z-10 transition-all duration-[2000ms] ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}
                 style={{ paddingTop: '12%' }}
             >
-                <p className="font-[Caveat] text-5xl md:text-7xl text-white/90 text-center font-bold px-6 leading-tight tracking-wide"
+                <p className={`font-[Caveat] text-5xl md:text-7xl text-white/90 text-center font-bold px-6 leading-tight tracking-wide transition-all duration-[2000ms] ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
                     style={{ textShadow: '2px 4px 15px rgba(0,0,0,0.8), 0 0 60px rgba(245,230,163,0.15)' }}>
                     Beyond these mountains...
                 </p>
-                <p className="font-['Patrick_Hand'] text-xl md:text-3xl text-[#f5e6a3]/70 text-center mt-6 max-w-2xl mx-auto px-6 tracking-wide"
+                <p className={`font-['Patrick_Hand'] text-xl md:text-3xl text-[#f5e6a3]/70 text-center mt-6 max-w-2xl mx-auto px-6 tracking-wide transition-all duration-[2000ms] delay-[1000ms] ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
                     style={{ textShadow: '1px 2px 8px rgba(0,0,0,0.5)' }}>
                     ...our memories will always travel with you, Ma'am
                 </p>
