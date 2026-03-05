@@ -44,7 +44,7 @@ export default function FarewellQuote() {
 
         <div className="mt-14 space-y-3">
           <p className="font-[Caveat] text-2xl text-[#f5e6a3]">
-            We will miss you, Momita Ma'am
+            We will miss you, Moumita Ma'am
           </p>
           <p className="font-['Patrick_Hand'] text-lg text-white/40">
             From your students in Morbi, with love — to Kolkata, with pride.

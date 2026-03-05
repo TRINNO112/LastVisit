@@ -4,13 +4,13 @@ export default function ShareButton() {
     const [copied, setCopied] = useState(false)
 
     const pageUrl = 'https://trinno112.github.io/LastVisit/'
-    const shareText = 'Check out this beautiful farewell tribute to our teacher Momita Ma\'am 💛'
+    const shareText = 'Check out this beautiful farewell tribute to our teacher Moumita Ma\'am 💛'
 
     const handleShare = async () => {
         if (navigator.share) {
             try {
                 await navigator.share({
-                    title: 'Thank You, Momita Ma\'am',
+                    title: 'Thank You, Moumita Ma\'am',
                     text: shareText,
                     url: pageUrl,
                 })

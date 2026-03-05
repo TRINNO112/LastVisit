@@ -7,7 +7,7 @@ const memories = [
   {
     icon: '📚',
     title: 'The First Impression',
-    text: 'When Ma\'am Momita first walked into our Grade 11 classroom at OSEM, it was honestly a bit strange. Her teaching style was completely different from what we were used to. We didn\'t really know what to make of it at first.',
+    text: 'When Ma\'am Moumita first walked into our Grade 11 classroom at OSEM, it was honestly a bit strange. Her teaching style was completely different from what we were used to. We didn\'t really know what to make of it at first.',
   },
   {
     icon: '💡',

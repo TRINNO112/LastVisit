@@ -143,7 +143,7 @@ export default function Hero() {
         </div>
 
         <ChalkText
-          text="Momita Ma'am"
+          text="Moumita Ma'am"
           className="font-[Caveat] text-6xl md:text-8xl text-white text-center font-bold leading-tight tracking-wide"
           style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.3), 0 0 20px rgba(255,255,255,0.1)' }}
         />
