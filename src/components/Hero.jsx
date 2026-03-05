@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef, useCallback } from 'react'
 import FloatingDust from './FloatingDust'
 import ChalkDoodles from './ChalkDoodles'
 import PetalAnimation from './PetalAnimation'
-import useParallax from '../hooks/useParallax'
 
 function ChalkboardTexture() {
   return (
@@ -105,37 +104,112 @@ function ChalkText({ text, className, style }) {
 
 export default function Hero() {
   const [visible, setVisible] = useState(false)
-  const { ref: parallaxRef, offset } = useParallax(0.12)
+  const sectionRef = useRef(null)
+  const layersRef = useRef([])
+  const rafRef = useRef(null)
 
   useEffect(() => {
     setTimeout(() => setVisible(true), 200)
   }, [])
 
+  const setLayerRef = useCallback((index) => (el) => {
+    layersRef.current[index] = el
+  }, [])
+
+  // RAF-based parallax — direct DOM manipulation for smooth scroll
+  useEffect(() => {
+    const onScroll = () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current)
+      rafRef.current = requestAnimationFrame(() => {
+        if (!sectionRef.current) return
+
+        const scrollY = window.scrollY
+        const sectionH = sectionRef.current.offsetHeight
+
+        // Only apply effect while hero is visible
+        if (scrollY > sectionH * 1.5) return
+
+        // Parallax speeds for each layer (higher = moves more)
+        // Layer 0: Background decorations (slowest)
+        // Layer 1: Chalk doodles & petals
+        // Layer 2: Floating symbols
+        // Layer 3: Main text content (medium)
+        // Layer 4: "Scroll down" text (fastest)
+        const speeds = [0.03, 0.06, 0.12, 0.08, 0.2]
+
+        layersRef.current.forEach((el, i) => {
+          if (!el) return
+          const move = scrollY * speeds[i]
+          if (i === 0) {
+            // Background layer moves up slower — creates depth
+            el.style.transform = `translateY(${-move}px)`
+          } else if (i === 2) {
+            // Symbols: move up + slight scale for depth illusion
+            const scale = 1 + scrollY * 0.0002
+            el.style.transform = `translateY(${-move}px) scale(${scale})`
+          } else if (i === 4) {
+            // Scroll text fades + moves faster
+            el.style.transform = `translateY(${-move}px)`
+            el.style.opacity = Math.max(0, 1 - scrollY / (sectionH * 0.4))
+          } else {
+            el.style.transform = `translateY(${-move}px)`
+          }
+        })
+      })
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      if (rafRef.current) cancelAnimationFrame(rafRef.current)
+    }
+  }, [])
+
   return (
-    <section ref={parallaxRef} className="relative min-h-screen flex flex-col items-center justify-center px-6 overflow-hidden bg-[#2d5a27]"
+    <section ref={sectionRef} className="relative min-h-screen flex flex-col items-center justify-center px-6 overflow-hidden bg-[#2d5a27]"
       style={{ background: 'linear-gradient(145deg, #2d5a27 0%, #1e4a1e 30%, #2a5525 60%, #234d20 100%)' }}>
       <ChalkboardTexture />
-      <FloatingDust count={30} />
-      <ChalkDoodles indices={[0, 1, 4]} />
-      <PetalAnimation />
 
-      {/* Wooden frame border with inner shadow */}
-      <div className="absolute inset-3 border-[10px] border-[#6B4F1D] rounded-md pointer-events-none"
+      {/* Layer 0 — Background dust & petals (slowest parallax) */}
+      <div ref={setLayerRef(0)} className="absolute inset-0 will-change-transform">
+        <FloatingDust count={30} />
+        <PetalAnimation />
+      </div>
+
+      {/* Layer 1 — Chalk doodles (slow parallax) */}
+      <div ref={setLayerRef(1)} className="absolute inset-0 will-change-transform">
+        <ChalkDoodles indices={[0, 1, 4]} />
+      </div>
+
+      {/* Wooden frame border with inner shadow — stays fixed (no parallax) */}
+      <div className="absolute inset-3 border-[10px] border-[#6B4F1D] rounded-md pointer-events-none z-[2]"
         style={{
           boxShadow: 'inset 0 0 40px rgba(0,0,0,0.4), inset 0 0 80px rgba(0,0,0,0.15), 0 4px 20px rgba(0,0,0,0.5)',
           borderImage: 'linear-gradient(135deg, #8B6914 0%, #6B4F1D 30%, #A07B28 50%, #6B4F1D 70%, #8B6914 100%) 1',
         }} />
       {/* Inner chalk tray shadow at bottom */}
-      <div className="absolute bottom-3 left-3 right-3 h-6 bg-gradient-to-t from-[#5a3e14] to-transparent pointer-events-none rounded-b-md" />
+      <div className="absolute bottom-3 left-3 right-3 h-6 bg-gradient-to-t from-[#5a3e14] to-transparent pointer-events-none rounded-b-md z-[2]" />
 
-      {/* Chalk illustrations with parallax */}
-      <div className="absolute inset-0 z-[1]" style={{ transform: `translateY(${offset}px)` }}>
-        <div className="absolute top-[20%] left-[49%] text-white/20 text-6xl select-none animate-[gentleFloat_4s_ease-in-out_infinite]">✿</div>
-        <div className="absolute top-12 right-14 text-white/25 text-4xl select-none animate-[gentleFloat_5s_ease-in-out_infinite_0.5s]">★</div>
-        <div className="absolute bottom-28 right-16 text-white/25 text-4xl select-none animate-[gentleFloat_3.5s_ease-in-out_infinite_1s]">♡</div>
+      {/* Layer 2 — Floating chalk symbols (medium parallax + scale) */}
+      <div ref={setLayerRef(2)} className="absolute inset-0 z-[3] will-change-transform">
+        <div className="absolute top-[15%] left-[8%] text-white/15 text-5xl select-none animate-[gentleFloat_4s_ease-in-out_infinite]">✿</div>
+        <div className="absolute top-[10%] right-[10%] text-white/20 text-4xl select-none animate-[gentleFloat_5s_ease-in-out_infinite_0.5s]">★</div>
+        <div className="absolute bottom-[20%] right-[12%] text-white/20 text-4xl select-none animate-[gentleFloat_3.5s_ease-in-out_infinite_1s]">♡</div>
+        <div className="absolute top-[25%] left-[49%] text-white/15 text-6xl select-none animate-[gentleFloat_4.5s_ease-in-out_infinite_0.3s]">✿</div>
+        <div className="absolute bottom-[25%] left-[10%] text-white/15 text-3xl select-none animate-[gentleFloat_5.5s_ease-in-out_infinite_0.8s]">☆</div>
+        <div className="absolute top-[60%] right-[25%] text-white/10 text-5xl select-none animate-[gentleFloat_4s_ease-in-out_infinite_1.2s]">❀</div>
+        <div className="absolute top-[70%] left-[30%] text-white/12 text-3xl select-none animate-[gentleFloat_3s_ease-in-out_infinite_0.6s]">✦</div>
+        {/* Chalk-drawn underline decorations */}
+        <svg className="absolute top-[45%] left-[10%] w-24 h-4 opacity-10 pointer-events-none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2,8 Q12,2 24,8 Q36,14 48,8 Q60,2 72,8 Q84,14 96,8" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" />
+        </svg>
+        <svg className="absolute bottom-[35%] right-[8%] w-20 h-4 opacity-10 pointer-events-none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2,8 Q10,2 20,8 Q30,14 40,8 Q50,2 60,8 Q70,14 80,8" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" />
+        </svg>
       </div>
 
-      <div className={`relative z-10 transition-all duration-1000 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+      {/* Layer 3 — Main content (medium-slow parallax) */}
+      <div ref={setLayerRef(3)} className={`relative z-10 will-change-transform transition-all duration-1000 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
         <div className="flex items-center justify-center gap-4 mb-6">
           <div className="w-16 h-[2px] bg-white/40" />
           <span className="text-white/50 font-[Caveat] text-2xl">Thank You</span>
@@ -157,8 +231,11 @@ export default function Hero() {
         <div className="mt-10 flex justify-center">
           <div className="w-32 h-1 bg-white/20 rounded-full blur-sm" />
         </div>
+      </div>
 
-        <p className={`font-['Patrick_Hand'] text-lg text-[#f5e6a3]/60 text-center mt-8 animate-bounce transition-opacity duration-1000 delay-[2000ms] ${visible ? 'opacity-100' : 'opacity-0'}`}>
+      {/* Layer 4 — "Scroll down" (fastest parallax — disappears quickly) */}
+      <div ref={setLayerRef(4)} className={`relative z-10 mt-8 will-change-transform transition-opacity duration-1000 delay-[2000ms] ${visible ? 'opacity-100' : 'opacity-0'}`}>
+        <p className="font-['Patrick_Hand'] text-lg text-[#f5e6a3]/60 text-center animate-bounce">
           ↓ scroll down ↓
         </p>
       </div>
