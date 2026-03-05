@@ -130,3 +130,16 @@ body {
     transform: rotate(360deg);
   }
 }
+
+/* Star twinkle for parallax mountains */
+@keyframes twinkle {
+
+  0%,
+  100% {
+    opacity: 0.15;
+  }
+
+  50% {
+    opacity: 0.6;
+  }
+}

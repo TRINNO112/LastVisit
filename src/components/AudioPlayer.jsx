@@ -6,33 +6,50 @@ export default function AudioPlayer() {
   const [hasInteracted, setHasInteracted] = useState(false)
 
   useEffect(() => {
-    const handleClick = () => {
-      if (!hasInteracted && audioRef.current) {
+    const tryPlay = () => {
+      if (audioRef.current && !hasInteracted) {
         audioRef.current.volume = 0.3
         audioRef.current.play().then(() => {
           setPlaying(true)
           setHasInteracted(true)
-        }).catch(() => {})
+        }).catch((err) => {
+          console.warn('Audio autoplay blocked:', err.message)
+          // Don't give up — the toggle button still works
+        })
       }
     }
-    window.addEventListener('click', handleClick, { once: true })
-    return () => window.removeEventListener('click', handleClick)
+
+    // Listen on multiple user gesture events for broader browser support
+    const events = ['click', 'touchstart', 'keydown']
+    events.forEach(evt => window.addEventListener(evt, tryPlay, { once: true }))
+
+    return () => {
+      events.forEach(evt => window.removeEventListener(evt, tryPlay))
+    }
   }, [hasInteracted])
 
   const toggle = () => {
     if (!audioRef.current) return
     if (playing) {
       audioRef.current.pause()
+      setPlaying(false)
     } else {
       audioRef.current.volume = 0.3
-      audioRef.current.play().catch(() => {})
+      audioRef.current.play().then(() => {
+        setPlaying(true)
+        setHasInteracted(true)
+      }).catch((err) => {
+        console.warn('Audio play failed:', err.message)
+      })
     }
-    setPlaying(!playing)
   }
+
+  // Use import.meta.env.BASE_URL so the path works in both dev and production
+  const audioSrc = `${import.meta.env.BASE_URL}music/bg-music.mp3`
 
   return (
     <>
-      <audio ref={audioRef} src="/music/bg-music.mp3" loop preload="auto" />
+      <audio ref={audioRef} src={audioSrc} loop preload="auto" />
       <button
         onClick={toggle}
         className="fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full bg-[#1e4a1e] border-2 border-white/20 flex items-center justify-center text-white/70 hover:text-white hover:border-white/40 transition-all duration-300 shadow-lg backdrop-blur-sm"
