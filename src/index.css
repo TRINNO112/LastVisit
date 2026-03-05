@@ -143,3 +143,17 @@ body {
     opacity: 0.6;
   }
 }
+
+/* Shooting star animation */
+@keyframes shooting-star {
+  0% { transform: translate(300px, -300px) rotate(-35deg); opacity: 0; }
+  5% { opacity: 1; }
+  15% { transform: translate(-400px, 400px) rotate(-35deg); opacity: 0; }
+  100% { transform: translate(-400px, 400px) rotate(-35deg); opacity: 0; }
+}
+
+/* Tree sway animation */
+@keyframes tree-sway {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(1.5deg); }
+}
