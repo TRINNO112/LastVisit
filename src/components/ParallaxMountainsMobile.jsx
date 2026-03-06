@@ -90,7 +90,7 @@ export default function ParallaxMountainsMobile() {
         <section
             ref={containerRef}
             className="relative overflow-hidden"
-            style={{ height: '60vh', minHeight: '400px' }}
+            style={{ height: '60vh', minHeight: '400px', contain: 'layout style paint' }}
         >
             {/* SVG Definitions */}
             <svg className="absolute w-0 h-0" aria-hidden="true">
@@ -187,10 +187,6 @@ export default function ParallaxMountainsMobile() {
                 </svg>
             </div>
 
-            {/* Mist band between far and mid mountains */}
-            <div className="absolute left-0 right-0 z-[1] pointer-events-none" style={{ bottom: '42%', height: '8%' }}>
-                <div className="w-full h-full" style={{ background: 'linear-gradient(to top, transparent 0%, rgba(200,220,200,0.04) 40%, rgba(200,220,200,0.04) 60%, transparent 100%)' }} />
-            </div>
 
             {/* Layer 4 — Middle mountains + snow */}
             <div ref={el => layersRef.current[4] = el} className="absolute left-0 w-full will-change-transform" style={{ bottom: 0, height: '250%' }}>
@@ -204,10 +200,6 @@ export default function ParallaxMountainsMobile() {
                 </svg>
             </div>
 
-            {/* Second mist band */}
-            <div className="absolute left-0 right-0 z-[2] pointer-events-none" style={{ bottom: '34%', height: '6%' }}>
-                <div className="w-full h-full" style={{ background: 'linear-gradient(to top, transparent 0%, rgba(255,255,255,0.03) 50%, transparent 100%)' }} />
-            </div>
 
             {/* Layer 5 — Near mountains */}
             <div ref={el => layersRef.current[5] = el} className="absolute left-0 w-full will-change-transform" style={{ bottom: 0, height: '250%' }}>
@@ -286,6 +278,8 @@ export default function ParallaxMountainsMobile() {
                 className={`absolute inset-0 flex flex-col items-center z-10 transition-all duration-[2000ms] ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
                 style={{ paddingTop: '10%' }}
             >
+                {/* Dark backdrop so text doesn't compete with mountain peaks */}
+                <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse 90% 45% at 50% 12%, rgba(0,0,0,0.5) 0%, transparent 100%)' }} />
                 <p className={`font-[Caveat] text-[2rem] text-white/90 text-center font-bold px-5 leading-tight tracking-wide transition-all duration-[2000ms] ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
                     style={{ textShadow: '2px 4px 15px rgba(0,0,0,0.85), 0 0 50px rgba(245,230,163,0.12)' }}>
                     Beyond these mountains...

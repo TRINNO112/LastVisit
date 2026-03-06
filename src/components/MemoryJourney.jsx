@@ -99,28 +99,47 @@ export default function MemoryJourney() {
   const targetProgress = useRef(0)
   const currentProgress = useRef(0)
 
-  const [pathLengths, setPathLengths] = useState({ desktop: 2000, mobile: 2200 })
+  const pathLengthsRef = useRef({ desktop: 2000, mobile: 3000 })
+  const isVisibleRef = useRef(false)
 
   useEffect(() => {
-    // Measure actual path lengths on mount/resize for accurate drawing
+    // Measure actual path lengths on mount
     const measurePaths = () => {
-      setPathLengths({
-        desktop: lineDesktopRef.current?.getTotalLength() || 2000,
-        mobile: lineMobileRef.current?.getTotalLength() || 2200
-      })
+      const dLen = lineDesktopRef.current?.getTotalLength() || 2000
+      const mLen = lineMobileRef.current?.getTotalLength() || 3000
+      pathLengthsRef.current = { desktop: dLen, mobile: mLen }
+      // Update dasharray to match measured length
+      if (lineDesktopRef.current) {
+        lineDesktopRef.current.style.strokeDasharray = dLen
+        lineDesktopRef.current.style.strokeDashoffset = dLen
+      }
+      if (lineMobileRef.current) {
+        lineMobileRef.current.style.strokeDasharray = mLen
+        lineMobileRef.current.style.strokeDashoffset = mLen
+      }
     }
 
     measurePaths()
     window.addEventListener('resize', measurePaths)
 
-    const updateLine = () => {
-      currentProgress.current += (targetProgress.current - currentProgress.current) * 0.15 // Slightly snappier
+    // Intersection observer to only run animation loop when visible
+    const observer = new IntersectionObserver(
+      ([entry]) => { isVisibleRef.current = entry.isIntersecting },
+      { threshold: 0 }
+    )
+    if (containerRef.current) observer.observe(containerRef.current)
 
-      if (lineDesktopRef.current) {
-        lineDesktopRef.current.style.strokeDashoffset = Math.max(0, pathLengths.desktop - (currentProgress.current * pathLengths.desktop))
-      }
-      if (lineMobileRef.current) {
-        lineMobileRef.current.style.strokeDashoffset = Math.max(0, pathLengths.mobile - (currentProgress.current * pathLengths.mobile))
+    const updateLine = () => {
+      if (isVisibleRef.current) {
+        currentProgress.current += (targetProgress.current - currentProgress.current) * 0.06
+        const lengths = pathLengthsRef.current
+
+        if (lineDesktopRef.current) {
+          lineDesktopRef.current.style.strokeDashoffset = Math.max(0, lengths.desktop - (currentProgress.current * lengths.desktop))
+        }
+        if (lineMobileRef.current) {
+          lineMobileRef.current.style.strokeDashoffset = Math.max(0, lengths.mobile - (currentProgress.current * lengths.mobile))
+        }
       }
 
       rafRef.current = requestAnimationFrame(updateLine)
@@ -130,15 +149,11 @@ export default function MemoryJourney() {
       if (!containerRef.current) return
 
       const rect = containerRef.current.getBoundingClientRect()
-
-      // Calculate scroll progress locally within the section
-      // Start drawing as soon as the section header is visible
-      const sectionStart = rect.top - window.innerHeight * 0.5
       const sectionHeight = rect.height
 
-      // We want to finish drawing when the user is only 60% of the way through the section
-      // This ensures the line is ALWAYS ahead of them and hits the final icon early.
-      const drawFinishPoint = sectionHeight * 0.6
+      // We want to finish drawing when the user is about 85% of the way through the section
+      // This ensures the line reaches the final icon (Heading Back to Kolkata).
+      const drawFinishPoint = sectionHeight * 0.85
       const currentScroll = -rect.top + window.innerHeight * 0.8
 
       let progress = currentScroll / drawFinishPoint
@@ -156,9 +171,10 @@ export default function MemoryJourney() {
     return () => {
       window.removeEventListener('resize', measurePaths)
       window.removeEventListener('scroll', handleScroll)
+      observer.disconnect()
       if (rafRef.current) cancelAnimationFrame(rafRef.current)
     }
-  }, [pathLengths])
+  }, [])
 
   return (
     <section ref={containerRef} className="relative py-20 px-6 bg-[#1e4a1e] overflow-hidden" style={{ background: 'linear-gradient(180deg, #1e4a1e 0%, #234d20 50%, #1e4a1e 100%)' }}>
@@ -179,28 +195,27 @@ export default function MemoryJourney() {
             <path
               ref={lineMobileRef}
               className="md:hidden"
-              d="M 6 0 L 6 2200"
-              fill="none" stroke="url(#chalkGradient)" strokeWidth="3" strokeLinecap="round"
+              d="M 6 0 L 6 3000"
+              fill="none" stroke="url(#chalkGradient)" strokeWidth="4" strokeLinecap="round"
               style={{
-                strokeDasharray: pathLengths.mobile,
-                strokeDashoffset: pathLengths.mobile
+                strokeDasharray: 3000,
+                strokeDashoffset: 3000
               }}
             />
             <path
               ref={lineDesktopRef}
               className="hidden md:block"
-              d={`M 80 0 C 120 100, 40 200, 80 300 C 120 400, 40 500, 80 600 C 120 700, 40 800, 80 900 C 120 1000, 40 1100, 80 1200 C 120 1300, 40 1400, 80 1500 C 120 1600, 40 1700, 80 1800 C 120 1900, 40 2000, 80 2100`}
+              d={`M 80 0 C 120 100, 40 200, 80 300 C 120 400, 40 500, 80 600 C 120 700, 40 800, 80 900 C 120 1000, 40 1100, 80 1200 C 120 1300, 40 1400, 80 1500 C 120 1600, 40 1700, 80 1800 C 120 1900, 40 2000, 80 2100 C 120 2200, 40 2300, 80 2400 C 120 2500, 40 2600, 80 2700`}
               fill="none" stroke="url(#chalkGradient)" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"
               style={{
-                strokeDasharray: pathLengths.desktop,
-                strokeDashoffset: pathLengths.desktop
+                strokeDasharray: 2000,
+                strokeDashoffset: 2000
               }}
             />
             <defs>
               <linearGradient id="chalkGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="rgba(255,255,255,0.8)" />
-                <stop offset="50%" stopColor="rgba(255,255,255,0.5)" />
-                <stop offset="100%" stopColor="rgba(255,255,255,0.1)" />
+                <stop offset="0%" stopColor="rgba(255,255,255,0.7)" />
+                <stop offset="100%" stopColor="rgba(255,255,255,0.7)" />
               </linearGradient>
             </defs>
           </svg>

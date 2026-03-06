@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, useCallback } from 'react'
 const STAR_COLORS = ['#ffffff', '#ffffff', '#ffffff', '#ffe8c0', '#ffe8c0', '#c0d8ff', '#c0d8ff', '#fff5e0', '#d0e0ff']
 
 // Stable data generated once to ensure component purity
-const STARS_DATA = Array.from({ length: 100 }).map((_, i) => ({
+const STARS_DATA = Array.from({ length: 50 }).map((_, i) => ({
     id: i,
     width: Math.random() * 3 + 2,
     height: Math.random() * 3 + 2,
@@ -34,7 +34,7 @@ const MOBILE_TREE_DATA = MOBILE_TREES_X_POSITIONS.map((x, i) => {
 })
 
 // Fireflies — gentle floating warm dots among the foreground
-const FIREFLIES_COUNT = typeof window !== 'undefined' && window.innerWidth < 768 ? 22 : 12
+const FIREFLIES_COUNT = typeof window !== 'undefined' && window.innerWidth < 768 ? 10 : 12
 const FIREFLIES_DATA = Array.from({ length: FIREFLIES_COUNT }).map((_, i) => ({
     id: i,
     left: 5 + Math.random() * 90,
@@ -113,7 +113,7 @@ export default function ParallaxMountains() {
         <section
             ref={containerRef}
             className="relative overflow-hidden"
-            style={{ height: '120vh', minHeight: '600px' }}
+            style={{ height: '120vh', minHeight: '600px', contain: 'layout style paint' }}
         >
             {/* SVG Definitions for Filters and Gradients */}
             <svg className="absolute w-0 h-0" aria-hidden="true">
@@ -346,8 +346,8 @@ export default function ParallaxMountains() {
             </div>
 
             {/* Mist Layers for depth */}
-            <div className="absolute bottom-[30%] left-0 right-0 h-32 z-[3] pointer-events-none opacity-40">
-                <div className="w-full h-full" style={{ background: 'linear-gradient(to top, transparent 0%, rgba(255,255,255,0.05) 50%, transparent 100%)' }} />
+            <div className="absolute bottom-[30%] left-0 right-0 h-32 z-[3] pointer-events-none">
+                <div className="w-full h-full" style={{ background: 'linear-gradient(to top, transparent 0%, rgba(200,220,200,0.12) 50%, transparent 100%)' }} />
             </div>
 
             {/* Bottom seamless transition */}
