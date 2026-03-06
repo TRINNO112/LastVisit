@@ -5,6 +5,27 @@ import ChalkDoodles from './ChalkDoodles'
 import VisitCounter from './VisitCounter'
 import ShareButton from './ShareButton'
 
+export function TypewriterText({ text, visible, delay = 0 }) {
+  const words = text.split(" ")
+  return (
+    <>
+      {words.map((word, i) => (
+        <span
+          key={i}
+          className="inline-block transition-all duration-500 ease-out"
+          style={{
+            opacity: visible ? 1 : 0,
+            transform: visible ? 'translateY(0)' : 'translateY(10px)',
+            transitionDelay: `${delay + i * 150}ms`
+          }}
+        >
+          {word}&nbsp;
+        </span>
+      ))}
+    </>
+  )
+}
+
 export default function FarewellQuote() {
   const ref = useRef(null)
   const [visible, setVisible] = useState(false)
@@ -37,12 +58,14 @@ export default function FarewellQuote() {
 
         <blockquote className="font-[Caveat] text-3xl md:text-4xl text-white/90 leading-relaxed font-bold"
           style={{ textShadow: '1px 1px 3px rgba(0,0,0,0.3)' }}>
-          "A good teacher can inspire hope, ignite the imagination, and instill a love of learning."
+          <TypewriterText text='"A good teacher can inspire hope, ignite the imagination, and instill a love of learning."' visible={visible} delay={300} />
         </blockquote>
 
-        <p className="font-['Patrick_Hand'] text-xl text-white/40 mt-6">— Brad Henry</p>
+        <p className={`font-['Patrick_Hand'] text-xl text-white/40 mt-6 transition-opacity duration-1000 ${visible ? 'opacity-100 delay-[2500ms]' : 'opacity-0 delay-0'}`}>
+          — Brad Henry
+        </p>
 
-        <div className="mt-14 space-y-3">
+        <div className={`mt-14 space-y-3 transition-all duration-1000 delay-500 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           <p className="font-[Caveat] text-2xl text-[#f5e6a3]">
             We will miss you, Moumita Ma'am
           </p>

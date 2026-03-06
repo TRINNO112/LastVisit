@@ -58,11 +58,19 @@ export default function PageLoader({ onLoaded }) {
 
     return (
         <div
-            className={`fixed inset-0 z-[9999] flex flex-col items-center justify-center transition-opacity duration-700 ${fadeOut ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+            className={`fixed inset-0 z-[9999] flex flex-col items-center justify-center transition-all duration-1000 ${fadeOut ? 'opacity-0 scale-110 blur-xl pointer-events-none' : 'opacity-100 scale-100 blur-0'}`}
             style={{
                 background: 'linear-gradient(145deg, #2d5a27 0%, #1e4a1e 40%, #234d20 100%)',
             }}
         >
+            <style>{`
+                @keyframes drawFlower {
+                    0% { stroke-dashoffset: 300; opacity: 0; }
+                    20% { opacity: 1; }
+                    80% { stroke-dashoffset: 0; opacity: 1; }
+                    100% { stroke-dashoffset: 0; opacity: 0; }
+                }
+            `}</style>
             {/* Chalk texture overlay */}
             <svg className="absolute inset-0 w-full h-full pointer-events-none" xmlns="http://www.w3.org/2000/svg">
                 <filter id="loaderNoise">
@@ -77,9 +85,25 @@ export default function PageLoader({ onLoaded }) {
 
             {/* Loading content */}
             <div className="relative z-10 flex flex-col items-center">
-                {/* Chalk-style loader */}
-                <div className="relative mb-8">
-                    <div className="text-5xl md:text-6xl animate-pulse">✿</div>
+                {/* Chalk-style animated SVG flower loader */}
+                <div className="relative mb-8 w-24 h-24 flex items-center justify-center">
+                    <svg viewBox="0 0 100 100" className="w-full h-full overflow-visible drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]">
+                        {/* 4 petals drawn sequentially */}
+                        <path
+                            d="M 50 50 C 30 20 , 70 20 , 50 50 C 80 30 , 80 70 , 50 50 C 70 80 , 30 80 , 50 50 C 20 70 , 20 30 , 50 50 Z"
+                            fill="none"
+                            stroke="rgba(255,255,255,0.9)"
+                            strokeWidth="2.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            className="drop-shadow-[0_0_2px_rgba(255,255,255,0.8)]"
+                            style={{
+                                strokeDasharray: 300,
+                                animation: 'drawFlower 3s ease-in-out infinite'
+                            }}
+                        />
+                        <circle cx="50" cy="50" r="4" fill="rgba(255,255,255,0.9)" className="animate-pulse shadow-[0_0_10px_rgba(255,255,255,1)]" />
+                    </svg>
                 </div>
 
                 <h2 className="font-[Caveat] text-3xl md:text-4xl text-white/80 mb-3"

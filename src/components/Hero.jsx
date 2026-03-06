@@ -104,9 +104,12 @@ function ChalkText({ text, className, style }) {
 
 export default function Hero() {
   const [visible, setVisible] = useState(false)
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
   const sectionRef = useRef(null)
   const layersRef = useRef([])
   const rafRef = useRef(null)
+  const targetMousePos = useRef({ x: 0, y: 0 })
+  const currentMousePos = useRef({ x: 0, y: 0 })
 
   useEffect(() => {
     setTimeout(() => setVisible(true), 200)
@@ -116,51 +119,77 @@ export default function Hero() {
     layersRef.current[index] = el
   }, [])
 
-  // RAF-based parallax — direct DOM manipulation for smooth scroll
+  // RAF-based parallax — direct DOM manipulation for smooth scroll & mousemove
   useEffect(() => {
-    const onScroll = () => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current)
-      rafRef.current = requestAnimationFrame(() => {
-        if (!sectionRef.current) return
+    let scrollY = window.scrollY
 
-        const scrollY = window.scrollY
-        const sectionH = sectionRef.current.offsetHeight
+    const updateParallax = () => {
+      if (!sectionRef.current) {
+        rafRef.current = requestAnimationFrame(updateParallax)
+        return
+      }
 
-        // Only apply effect while hero is visible
-        if (scrollY > sectionH * 1.5) return
+      // Smooth mouse interpolation
+      currentMousePos.current.x += (targetMousePos.current.x - currentMousePos.current.x) * 0.05
+      currentMousePos.current.y += (targetMousePos.current.y - currentMousePos.current.y) * 0.05
 
-        // Parallax speeds for each layer (higher = moves more)
-        // Layer 0: Background decorations (slowest)
-        // Layer 1: Chalk doodles & petals
-        // Layer 2: Floating symbols
-        // Layer 3: Main text content (medium)
-        // Layer 4: "Scroll down" text (fastest)
+      const sectionH = sectionRef.current.offsetHeight
+      const mx = currentMousePos.current.x
+      const my = currentMousePos.current.y
+
+      // Calculate parallax only if Hero is relatively visible
+      if (scrollY <= sectionH * 1.5) {
         const speeds = [0.03, 0.06, 0.12, 0.08, 0.2]
 
         layersRef.current.forEach((el, i) => {
           if (!el) return
-          const move = scrollY * speeds[i]
+          const scrollMove = scrollY * speeds[i]
+          let mouseMoveX = 0
+          let mouseMoveY = 0
+
+          // Apply mouse parallax mostly to background dust and floating symbols
           if (i === 0) {
-            // Background layer moves up slower — creates depth
-            el.style.transform = `translateY(${-move}px)`
+            mouseMoveX = mx * -0.02
+            mouseMoveY = my * -0.02
+            el.style.transform = `translate3d(${mouseMoveX}px, ${-scrollMove + mouseMoveY}px, 0)`
           } else if (i === 2) {
-            // Symbols: move up + slight scale for depth illusion
+            mouseMoveX = mx * -0.03
+            mouseMoveY = my * -0.03
             const scale = 1 + scrollY * 0.0002
-            el.style.transform = `translateY(${-move}px) scale(${scale})`
+            el.style.transform = `translate3d(${mouseMoveX}px, ${-scrollMove + mouseMoveY}px, 0) scale(${scale})`
           } else if (i === 4) {
-            // Scroll text fades + moves faster
-            el.style.transform = `translateY(${-move}px)`
+            el.style.transform = `translate3d(0, ${-scrollMove}px, 0)`
             el.style.opacity = Math.max(0, 1 - scrollY / (sectionH * 0.4))
           } else {
-            el.style.transform = `translateY(${-move}px)`
+            mouseMoveX = mx * -0.015
+            mouseMoveY = my * -0.015
+            el.style.transform = `translate3d(${mouseMoveX}px, ${-scrollMove + mouseMoveY}px, 0)`
           }
         })
-      })
+      }
+
+      rafRef.current = requestAnimationFrame(updateParallax)
     }
 
+    const onScroll = () => {
+      scrollY = window.scrollY
+    }
+
+    const handleMouseMove = (e) => {
+      if (!sectionRef.current) return
+      const rect = sectionRef.current.getBoundingClientRect()
+      const x = e.clientX - rect.left - rect.width / 2
+      const y = e.clientY - rect.top - rect.height / 2
+      targetMousePos.current = { x, y }
+    }
+
+    rafRef.current = requestAnimationFrame(updateParallax)
     window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('mousemove', handleMouseMove, { passive: true })
+
     return () => {
       window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('mousemove', handleMouseMove)
       if (rafRef.current) cancelAnimationFrame(rafRef.current)
     }
   }, [])

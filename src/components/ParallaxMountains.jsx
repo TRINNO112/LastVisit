@@ -24,8 +24,18 @@ const TREE_DATA = TREES_X_POSITIONS.map((x, i) => {
     return { x, baseY, h, w, delay: i * 0.3 }
 })
 
+// Mobile-only trees to fill the gaps on small screens
+const MOBILE_TREES_X_POSITIONS = [30, 140, 260, 400, 540, 680]
+const MOBILE_TREE_DATA = MOBILE_TREES_X_POSITIONS.map((x, i) => {
+    const baseY = 245 + Math.sin(x * 0.005) * 20
+    const h = 45 + (i % 2) * 10
+    const w = 14 + (i % 2) * 3
+    return { x, baseY, h, w, delay: i * 0.4 + 2 }
+})
+
 // Fireflies — gentle floating warm dots among the foreground
-const FIREFLIES_DATA = Array.from({ length: 12 }).map((_, i) => ({
+const FIREFLIES_COUNT = typeof window !== 'undefined' && window.innerWidth < 768 ? 22 : 12
+const FIREFLIES_DATA = Array.from({ length: FIREFLIES_COUNT }).map((_, i) => ({
     id: i,
     left: 5 + Math.random() * 90,
     bottom: 15 + Math.random() * 35,
@@ -46,6 +56,14 @@ export default function ParallaxMountains() {
     const layersRef = useRef([])
     const rafRef = useRef(null)
     const [visible, setVisible] = useState(false)
+    const [isMobile, setIsMobile] = useState(false)
+
+    useEffect(() => {
+        const checkMobile = () => setIsMobile(window.innerWidth < 768)
+        checkMobile()
+        window.addEventListener('resize', checkMobile)
+        return () => window.removeEventListener('resize', checkMobile)
+    }, [])
 
     // Direct RAF-based parallax for buttery smooth movement
     const handleScroll = useCallback(() => {
@@ -171,13 +189,16 @@ export default function ParallaxMountains() {
             {/* Layer 5 — Farthest mountains */}
             <div ref={el => layersRef.current[2] = el} className="absolute bottom-0 left-0 w-full will-change-transform" style={{ height: '70%', overflow: 'visible' }}>
                 <svg
-                    className="absolute bottom-0 left-0 w-full h-full"
-                    viewBox="0 0 1440 500"
-                    preserveAspectRatio="none"
+                    className="absolute bottom-0 left-0 w-full h-full object-cover origin-bottom md:object-fill"
+                    viewBox={isMobile ? "0 0 800 500" : "0 0 1440 500"}
+                    preserveAspectRatio="xMidYMax slice"
                     style={{ overflow: 'visible' }}
                 >
                     <path
-                        d="M0,500 L0,320 Q40,260 80,290 Q140,220 200,270 Q260,190 340,250 Q400,170 480,230 Q540,150 620,210 Q700,130 780,190 Q840,120 920,170 Q1000,100 1060,160 Q1120,110 1200,170 Q1280,130 1360,180 Q1400,160 1440,200 L1440,500 Z"
+                        d={isMobile
+                            ? "M0,500 L0,350 L150,220 L300,320 L450,180 L600,280 L750,150 L800,190 L800,500 Z"
+                            : "M0,500 L0,320 Q40,260 80,290 Q140,220 200,270 Q260,190 340,250 Q400,170 480,230 Q540,150 620,210 Q700,130 780,190 Q840,120 920,170 Q1000,100 1060,160 Q1120,110 1200,170 Q1280,130 1360,180 Q1400,160 1440,200 L1440,500 Z"
+                        }
                         fill="#0d1f0e"
                         opacity="0.6"
                     />
@@ -187,13 +208,16 @@ export default function ParallaxMountains() {
             {/* Layer 4 — Far-mid mountains */}
             <div ref={el => layersRef.current[3] = el} className="absolute bottom-0 left-0 w-full will-change-transform" style={{ height: '60%', overflow: 'visible' }}>
                 <svg
-                    className="absolute bottom-0 left-0 w-full h-full"
-                    viewBox="0 0 1440 450"
-                    preserveAspectRatio="none"
+                    className="absolute bottom-0 left-0 w-full h-full object-cover origin-bottom md:object-fill"
+                    viewBox={isMobile ? "0 0 800 450" : "0 0 1440 450"}
+                    preserveAspectRatio="xMidYMax slice"
                     style={{ overflow: 'visible' }}
                 >
                     <path
-                        d="M0,450 L0,280 Q60,220 140,260 Q220,170 320,230 Q400,140 500,210 Q580,120 680,190 Q760,100 840,170 Q920,120 1000,180 Q1080,100 1160,170 Q1240,130 1320,190 Q1380,150 1440,210 L1440,450 Z"
+                        d={isMobile
+                            ? "M0,450 L0,300 L120,160 L240,260 L380,120 L520,240 L680,100 L800,180 L800,450 Z"
+                            : "M0,450 L0,280 Q60,220 140,260 Q220,170 320,230 Q400,140 500,210 Q580,120 680,190 Q760,100 840,170 Q920,120 1000,180 Q1080,100 1160,170 Q1240,130 1320,190 Q1380,150 1440,210 L1440,450 Z"
+                        }
                         fill="#122a12"
                         opacity="0.8"
                     />
@@ -203,13 +227,16 @@ export default function ParallaxMountains() {
             {/* Layer 3 — Middle mountains */}
             <div ref={el => layersRef.current[4] = el} className="absolute bottom-0 left-0 w-full will-change-transform" style={{ height: '50%', overflow: 'visible' }}>
                 <svg
-                    className="absolute bottom-0 left-0 w-full h-full"
-                    viewBox="0 0 1440 400"
-                    preserveAspectRatio="none"
+                    className="absolute bottom-0 left-0 w-full h-full object-cover origin-bottom md:object-fill"
+                    viewBox={isMobile ? "0 0 800 400" : "0 0 1440 400"}
+                    preserveAspectRatio="xMidYMax slice"
                     style={{ overflow: 'visible' }}
                 >
                     <path
-                        d="M0,400 L0,240 Q80,170 180,220 Q280,120 380,190 Q460,100 560,170 Q640,80 740,150 Q820,100 920,170 Q1000,80 1100,160 Q1180,110 1280,180 Q1360,130 1440,190 L1440,400 Z"
+                        d={isMobile
+                            ? "M0,400 L0,260 L180,100 L340,220 L500,80 L660,200 L800,120 L800,400 Z"
+                            : "M0,400 L0,240 Q80,170 180,220 Q280,120 380,190 Q460,100 560,170 Q640,80 740,150 Q820,100 920,170 Q1000,80 1100,160 Q1180,110 1280,180 Q1360,130 1440,190 L1440,400 Z"
+                        }
                         fill="#1a3c1b"
                     />
                     {/* Snow caps */}
@@ -222,13 +249,16 @@ export default function ParallaxMountains() {
             {/* Layer 2 — Near mountains */}
             <div ref={el => layersRef.current[5] = el} className="absolute bottom-0 left-0 w-full will-change-transform" style={{ height: '40%', overflow: 'visible' }}>
                 <svg
-                    className="absolute bottom-0 left-0 w-full h-full"
-                    viewBox="0 0 1440 350"
-                    preserveAspectRatio="none"
+                    className="absolute bottom-0 left-0 w-full h-full object-cover origin-bottom md:object-fill"
+                    viewBox={isMobile ? "0 0 800 350" : "0 0 1440 350"}
+                    preserveAspectRatio="xMidYMax slice"
                     style={{ overflow: 'visible' }}
                 >
                     <path
-                        d="M0,350 L0,200 Q100,130 220,180 Q340,90 460,160 Q540,80 660,140 Q760,60 880,130 Q960,80 1080,140 Q1180,70 1300,130 Q1380,100 1440,150 L1440,350 Z"
+                        d={isMobile
+                            ? "M0,350 L0,220 L200,80 L380,180 L560,60 L740,160 L800,100 L800,350 Z"
+                            : "M0,350 L0,200 Q100,130 220,180 Q340,90 460,160 Q540,80 660,140 Q760,60 880,130 Q960,80 1080,140 Q1180,70 1300,130 Q1380,100 1440,150 L1440,350 Z"
+                        }
                         fill="#1e4a1e"
                     />
                 </svg>
@@ -237,20 +267,23 @@ export default function ParallaxMountains() {
             {/* Layer 1 — Foreground hills + trees */}
             <div ref={el => layersRef.current[6] = el} className="absolute bottom-0 left-0 w-full will-change-transform" style={{ height: '45%', overflow: 'visible' }}>
                 <svg
-                    className="absolute bottom-0 left-0 w-full h-full"
-                    viewBox="0 0 1440 400"
-                    preserveAspectRatio="none"
+                    className="absolute bottom-0 left-0 w-full h-full object-cover origin-bottom md:object-fill"
+                    viewBox={isMobile ? "0 0 800 400" : "0 0 1440 400"}
+                    preserveAspectRatio="xMidYMax slice"
                     style={{ overflow: 'visible' }}
                 >
                     {/* Ground */}
                     <path
-                        d="M0,400 L0,270 Q120,220 240,250 Q360,190 480,240 Q600,180 720,230 Q840,170 960,220 Q1080,180 1200,225 Q1320,195 1440,230 L1440,400 Z"
+                        d={isMobile
+                            ? "M0,400 L0,240 Q100,190 200,220 Q300,180 400,210 Q500,160 600,200 Q700,150 800,190 L800,400 Z"
+                            : "M0,400 L0,270 Q120,220 240,250 Q360,190 480,240 Q600,180 720,230 Q840,170 960,220 Q1080,180 1200,225 Q1320,195 1440,230 L1440,400 Z"
+                        }
                         fill="#2a5525"
                     />
 
                     {/* Trees with Sway Animation */}
                     {TREE_DATA.map((tree, i) => (
-                        <g key={i} className="animate-[tree-sway_4s_ease-in-out_infinite]" style={{ transformOrigin: `${tree.x}px ${tree.baseY}px`, animationDelay: `${tree.delay}s` }}>
+                        <g key={`dt-${i}`} className="animate-[tree-sway_4s_ease-in-out_infinite]" style={{ transformOrigin: `${tree.x}px ${tree.baseY}px`, animationDelay: `${tree.delay}s` }}>
                             {/* Trunk */}
                             <rect x={tree.x - 2} y={tree.baseY - 8} width={4} height={16} fill="#0d1a08" opacity="0.7" />
                             {/* Bottom foliage */}
@@ -259,6 +292,15 @@ export default function ParallaxMountains() {
                             <polygon points={`${tree.x},${tree.baseY - tree.h - 12} ${tree.x - tree.w * 0.8},${tree.baseY - tree.h + 15} ${tree.x + tree.w * 0.8},${tree.baseY - tree.h + 15}`} fill="#245a24" />
                             {/* Top foliage */}
                             <polygon points={`${tree.x},${tree.baseY - tree.h - 24} ${tree.x - tree.w * 0.5},${tree.baseY - tree.h - 2} ${tree.x + tree.w * 0.5},${tree.baseY - tree.h - 2}`} fill="#2e6e2e" />
+                        </g>
+                    ))}
+
+                    {/* Mobile-only supplement trees */}
+                    {isMobile && MOBILE_TREE_DATA.map((tree, i) => (
+                        <g key={`mt-${i}`} className="animate-[tree-sway_4.5s_ease-in-out_infinite]" style={{ transformOrigin: `${tree.x}px ${tree.baseY}px`, animationDelay: `${tree.delay}s` }}>
+                            <rect x={tree.x - 1.5} y={tree.baseY - 6} width={3} height={12} fill="#0d1a08" opacity="0.6" />
+                            <polygon points={`${tree.x},${tree.baseY - tree.h} ${tree.x - tree.w},${tree.baseY} ${tree.x + tree.w},${tree.baseY}`} fill="#1a3a1a" />
+                            <polygon points={`${tree.x},${tree.baseY - tree.h - 10} ${tree.x - tree.w * 0.8},${tree.baseY - tree.h + 12} ${tree.x + tree.w * 0.8},${tree.baseY - tree.h + 12}`} fill="#245a24" />
                         </g>
                     ))}
                 </svg>
