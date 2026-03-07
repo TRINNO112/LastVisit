@@ -10,12 +10,12 @@ const messages = [
   },
   {
     name: 'Ashish',
-    emoji: '📈',
+    emoji: '😄',
     message: "Dear Maumita Mam,\nAap sirf ek Accounts teacher nahi, balki ek amazing mentor ho. Aapki explanation se har tough concept bhi easy lagta tha. Class me meri thodi masti bhi chalti thi, par aapne hamesha support kiya. Aap ja rahi ho par aapki classes aur teachings hamesha yaad rahengi. We will miss you. 😊",
   },
   {
     name: 'Yuvraj',
-    emoji: '📖',
+    emoji: '🥹',
     message: "Ma'am,\nToday, as we look back, we feel incredibly fortunate to have learned Accounts from you. You did not just teach us the subject; you made us fall in love with it.\n\nMeri taraf se ye last message hai aapke liye. Maine kabhi accounts serious liya hi nahi tha, lekin jab aap aaye aur aapne padhana chalu kiya, tab ek alag sa hi mann hua padhne ka. Jahan accounts mujhe confuse karti thi, wahi cheez aapne mujhe un numbers ke saath khelna sikha diya. Ab jab aap jaa rahe ho, tab hamara dil thoda bhari sa lagega aur humein samajhne wala bhi koi nahi hoga itna, jitna aapne acche se samjhaya hai. Meri ye last line hai aapke liye ki Ma'am, aapka jo sapna hai wo zaroor poora hoga, meri saari wishes aapke saath hain. Thank you for everything Ma'am!\n\nThank you",
   },
 ]
