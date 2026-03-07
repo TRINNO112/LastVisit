@@ -9,7 +9,18 @@
       "Bash(head:*)",
       "Bash(magick:*)",
       "Bash(\"C:\\\\Program Files\\\\WindowsApps\\\\25415Inkscape.Inkscape_1.4.30.0_x64__9waqn51p1ttv2\\\\VFS\\\\ProgramFilesX64\\\\Inkscape\\\\bin\\\\inkscape.exe\":*)",
-      "Bash(mkdir -p \"D:/Trinno/LastVisit/eps-test\" && \"C:\\\\Program Files\\\\WindowsApps\\\\25415Inkscape.Inkscape_1.4.30.0_x64__9waqn51p1ttv2\\\\VFS\\\\ProgramFilesX64\\\\Inkscape\\\\bin\\\\inkscape.exe\" \"d:/Trinno/2201_w026_n002_1365b_p1_1365.eps\" --export-type=svg --export-filename=\"D:/Trinno/LastVisit/eps-test/full.svg\" 2>&1)"
+      "Bash(mkdir -p \"D:/Trinno/LastVisit/eps-test\" && \"C:\\\\Program Files\\\\WindowsApps\\\\25415Inkscape.Inkscape_1.4.30.0_x64__9waqn51p1ttv2\\\\VFS\\\\ProgramFilesX64\\\\Inkscape\\\\bin\\\\inkscape.exe\" \"d:/Trinno/2201_w026_n002_1365b_p1_1365.eps\" --export-type=svg --export-filename=\"D:/Trinno/LastVisit/eps-test/full.svg\" 2>&1)",
+      "Bash(winget install:*)",
+      "Bash(winget search:*)",
+      "Bash(npx:*)",
+      "Bash(which npx:*)",
+      "Bash(powershell:*)",
+      "Bash(curl:*)",
+      "Bash(\"D:/Trinno/gs_setup.exe\":*)",
+      "Bash(chmod +x D:/Trinno/gs_setup.exe && \"D:/Trinno/gs_setup.exe\" /S /D=D:\\\\\\\\Trinno\\\\\\\\gs 2>&1)",
+      "Bash(cmd:*)",
+      "Bash(npm list:*)",
+      "Bash(cd D:/Trinno && node -e \"const p=require\\('7zip-bin'\\);console.log\\(p.path7za\\)\" 2>&1)"
     ]
   }
 }

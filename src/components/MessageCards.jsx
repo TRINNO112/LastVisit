@@ -4,29 +4,19 @@ import FloatingDust from './FloatingDust'
 
 const messages = [
   {
-    name: 'Student 1',
-    emoji: '💛',
-    message: 'Ma\'am, you made accounts my favourite subject. I\'ll never forget how patiently you explained everything. Thank you for believing in us!',
+    name: 'Sufiyan',
+    emoji: '🎮',
+    message: "Ma'am kaash aap humare sath akhri baar ludo khel pati !",
   },
   {
-    name: 'Student 2',
-    emoji: '🌟',
-    message: 'From balance sheets to life lessons, you taught us so much more than just a subject. Morbi won\'t be the same without you, Ma\'am.',
+    name: 'Ashish',
+    emoji: '📈',
+    message: "Dear Maumita Mam,\nAap sirf ek Accounts teacher nahi, balki ek amazing mentor ho. Aapki explanation se har tough concept bhi easy lagta tha. Class me meri thodi masti bhi chalti thi, par aapne hamesha support kiya. Aap ja rahi ho par aapki classes aur teachings hamesha yaad rahengi. We will miss you. 😊",
   },
   {
-    name: 'Student 3',
-    emoji: '📝',
-    message: 'I used to hate numbers until you made them make sense. Thank you for every extra class and every patient explanation, Ma\'am.',
-  },
-  {
-    name: 'Student 4',
-    emoji: '🎓',
-    message: 'You didn\'t just teach us accounts — you taught us discipline, hard work, and how to never give up. We\'ll miss you so much!',
-  },
-  {
-    name: 'Student 5',
-    emoji: '🌻',
-    message: 'Kolkata is getting back one of the best teachers in the world. Thank you for everything, Ma\'am. Grade 11 was special because of you.',
+    name: 'Yuvraj',
+    emoji: '📖',
+    message: "Ma'am,\nToday, as we look back, we feel incredibly fortunate to have learned Accounts from you. You did not just teach us the subject; you made us fall in love with it.",
   },
 ]
 
