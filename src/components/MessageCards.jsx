@@ -6,7 +6,7 @@ const messages = [
   {
     name: 'Sufiyan',
     emoji: '🎮',
-    message: "Ma'am kaash aap humare sath akhri baar ludo khel pati !",
+    message: "Ma'am kaash aap humare sath akhri baar ludo khel pati !\nMa'am aap jab saap se kat jaati hain toh gir jaati hain, so never give up.",
   },
   {
     name: 'Ashish',
