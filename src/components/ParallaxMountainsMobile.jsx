@@ -711,7 +711,8 @@ export default function ParallaxMountainsMobile() {
                         const count = 4
                         const x = (vbW * i) / count + (i % 2 === 0 ? 15 : -10)
                         const t = x / vbW
-                        const layer7Y = 225 - 45 * Math.sin(t * Math.PI) + 5 // Sink trees deeper into path
+                        const scatterY = Math.sin(i * 13.7) * 6
+                        const layer7Y = 225 - 45 * Math.sin(t * Math.PI) + 5 + scatterY
 
                         // Sizing and delay
                         const h = 16
@@ -757,8 +758,9 @@ export default function ParallaxMountainsMobile() {
                         const count = 6
                         const x = (vbW * i) / count + (i % 2 === 0 ? 8 : -12)
                         const t = x / vbW
-                        // Approximate the bezier curve of layer 8 for desktop and mobile
-                        const layer8Y = 260 - 50 * Math.sin(t * Math.PI) + 6 // Sink trees deeper into path
+                        // Approximate the bezier curve + vertical scatter
+                        const scatterY = Math.sin(i * 41.2) * 10
+                        const layer8Y = 260 - 50 * Math.sin(t * Math.PI) + 6 + scatterY
 
                         const h = 24
                         const w = 7

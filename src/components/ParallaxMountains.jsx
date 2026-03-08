@@ -714,7 +714,9 @@ export default function ParallaxMountains() {
                         const count = 12
                         const x = (vbW * i) / count + (i % 2 === 0 ? 15 : -10)
                         const t = x / vbW
-                        const layer7Y = 125 - 40 * Math.sin(t * Math.PI) + 4 // Sink 4px into the path
+                        // Base Y curve + a deterministic random vertical scatter
+                        const scatterY = Math.sin(i * 13.7) * 6
+                        const layer7Y = 125 - 40 * Math.sin(t * Math.PI) + 4 + scatterY
 
                         // The user requested short/tiny pines, no birches on distant mountains
                         return (
@@ -756,8 +758,9 @@ export default function ParallaxMountains() {
                         const count = 16
                         const x = (vbW * i) / count + (i % 2 === 0 ? 8 : -12)
                         const t = x / vbW
-                        // Approximate the bezier curve of layer 8
-                        const layer8Y = 180 - 45 * Math.sin(t * Math.PI) + 5 // Sink 5px into the path
+                        // Approximate the bezier curve + vertical scatter
+                        const scatterY = Math.sin(i * 41.2) * 10
+                        const layer8Y = 180 - 45 * Math.sin(t * Math.PI) + 5 + scatterY
 
                         // User requested these be pure small pine trees, no birch
                         return (
