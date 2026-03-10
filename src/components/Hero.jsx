@@ -4,6 +4,12 @@ import ChalkDoodles from './ChalkDoodles'
 import PetalAnimation from './PetalAnimation'
 
 function ChalkboardTexture() {
+  const [dustSpecks] = useState(() => Array.from({ length: 80 }).map((_, i) => ({
+    id: i,
+    cx: `${Math.random() * 100}%`,
+    cy: `${Math.random() * 100}%`,
+    r: Math.random() * 2 + 0.5,
+  })))
   return (
     <>
       {/* Base grain texture */}
@@ -16,12 +22,12 @@ function ChalkboardTexture() {
       </svg>
       {/* Chalk dust specks */}
       <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-[0.18]" xmlns="http://www.w3.org/2000/svg">
-        {Array.from({ length: 80 }).map((_, i) => (
+        {dustSpecks.map((speck) => (
           <circle
-            key={i}
-            cx={`${Math.random() * 100}%`}
-            cy={`${Math.random() * 100}%`}
-            r={Math.random() * 2 + 0.5}
+            key={speck.id}
+            cx={speck.cx}
+            cy={speck.cy}
+            r={speck.r}
             fill="white"
           />
         ))}
@@ -104,7 +110,6 @@ function ChalkText({ text, className, style }) {
 
 export default function Hero() {
   const [visible, setVisible] = useState(false)
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
   const sectionRef = useRef(null)
   const layersRef = useRef([])
   const rafRef = useRef(null)
@@ -112,7 +117,8 @@ export default function Hero() {
   const currentMousePos = useRef({ x: 0, y: 0 })
 
   useEffect(() => {
-    setTimeout(() => setVisible(true), 200)
+    // Wait longer so petals are clearly visible and falling before text/content fades in
+    setTimeout(() => setVisible(true), 1200)
   }, [])
 
   const setLayerRef = useCallback((index) => (el) => {

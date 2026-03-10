@@ -42,7 +42,7 @@ export default function PageLoader({ onLoaded }) {
             setProgress(100)
 
             // Step 5: Fade out
-            await new Promise(r => setTimeout(r, 400))
+            await new Promise(r => setTimeout(r, 1500))
             if (cancelled) return
             setFadeOut(true)
 
