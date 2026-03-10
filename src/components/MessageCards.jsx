@@ -4,9 +4,14 @@ import FloatingDust from './FloatingDust'
 
 const messages = [
   {
-    name: 'Sufiyan',
-    emoji: '🎮',
-    message: "Ma'am kaash aap humare sath akhri baar ludo khel pati !\nMa'am aap jab saap se kat jaati hain toh gir jaati hain, so never give up.",
+    name: 'Rahul',
+    emoji: '🥺',
+    message: "Thank you for everything, ma'am. We truly appreciate the time you spent with us... 🥺😢❤️",
+  },
+  {
+    name: 'Jaydeep',
+    emoji: '🥀',
+    message: "Thank you, ma'am, for the lessons you taught us—not only in academics but also the valuable life lessons we received from you. We will always remember you, and thank you for everything. 🥺✨❤️",
   },
   {
     name: 'Ashish',
@@ -109,7 +114,7 @@ export default function MessageCards() {
           Words straight from the heart, written in chalk ✎
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
           {messages.map((msg, i) => (
             <Card key={i} data={msg} index={i} />
           ))}
