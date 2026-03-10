@@ -23,7 +23,8 @@ export default function VisitCounter() {
             sessionStorage.setItem('lastvisit_counted', 'true')
         }
 
-        setCount(newCount)
+        // We can just rely on setting local state asynchronously here too avoid triggering cascading render
+        setTimeout(() => setCount(newCount), 0)
 
         // Fade in after a short delay
         const timer = setTimeout(() => setVisible(true), 300)

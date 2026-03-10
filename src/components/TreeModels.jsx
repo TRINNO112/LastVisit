@@ -3,7 +3,7 @@ import React from 'react'
 // ═══════════════════════════════════════════════════════════════════════════════
 // PINE TREE (from ParallaxMountains)
 // ═══════════════════════════════════════════════════════════════════════════════
-export function PineTree({ x = 0, hillY = 0, h = 60, w = 20, swing = 0, delay = 0 }) {
+export function PineTree({ x = 0, hillY = 0, h = 60, w = 20 }) {
     return (
         <g style={{ transformOrigin: `${x}px ${hillY}px` }}>
             {/* Ground shadow */}

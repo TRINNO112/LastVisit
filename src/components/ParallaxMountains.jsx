@@ -111,7 +111,7 @@ const PARTICLES = Array.from({ length: 55 }, (_, i) => ({
 // ═══════════════════════════════════════════════════════════════════════════════
 // TREES — desktop & mobile
 // ═══════════════════════════════════════════════════════════════════════════════
-const r3 = makeRand(77)
+// ═══════════════════════════════════════════════════════════════════════════════
 const DESKTOP_TREE_X = [60, 155, 270, 400, 530, 660, 790, 920, 1040, 1160, 1280, 1390, 1440]
 const DESKTOP_TREES = DESKTOP_TREE_X.map((x, i) => ({
     x, h: 46 + (i % 4) * 14, w: 15 + (i % 3) * 5,
@@ -310,7 +310,6 @@ export default function ParallaxMountains() {
     const [visible, setVisible] = useState(false)
     const [scrollPct, setScrollPct] = useState(0)
     const [isMobile, setIsMobile] = useState(false)
-    const [cssReady, setCssReady] = useState(false)
 
     // ── CSS injection ────────────────────────────────────────────────────────
     useEffect(() => {
@@ -321,7 +320,6 @@ export default function ParallaxMountains() {
             el.textContent = KEYFRAMES_CSS
             document.head.appendChild(el)
         }
-        setCssReady(true)
     }, [])
 
     // ── Responsive detection ─────────────────────────────────────────────────
@@ -378,7 +376,7 @@ export default function ParallaxMountains() {
         return () => obs.disconnect()
     }, [])
 
-    if (!cssReady) return null
+
 
     // ── Derived layout values ────────────────────────────────────────────────
     const vbW = isMobile ? 430 : 1440

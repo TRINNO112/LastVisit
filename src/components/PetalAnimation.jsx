@@ -22,29 +22,33 @@ const petalColors = [
     '#fdd5b1', // apricot
 ]
 
-function Petal({ index, total }) {
+function Petal({ index }) {
     const path = petalPaths[index % petalPaths.length]
     const color = petalColors[index % petalColors.length]
 
     // Randomized properties for natural movement
-    const startLeft = Math.random() * 100                    // horizontal start (%)
-    const delay = Math.random() * 3                          // stagger start (s)
-    const duration = 5 + Math.random() * 4                   // fall duration (s)
-    const swayAmount = 40 + Math.random() * 60               // horizontal sway (px)
-    const rotationSpeed = 2 + Math.random() * 4              // rotation duration (s)
-    const scale = 0.6 + Math.random() * 0.6                  // size variation
-    const opacity = 0.5 + Math.random() * 0.4                // opacity variation
-    const swayDirection = Math.random() > 0.5 ? 1 : -1
-
+    const [props] = useState(() => ({
+        startLeft: Math.random() * 100,                    // horizontal start (%)
+        delay: Math.random() * 3,                          // stagger start (s)
+        duration: 5 + Math.random() * 4,                   // fall duration (s)
+        swayAmount: 40 + Math.random() * 60,               // horizontal sway (px)
+        rotationSpeed: 2 + Math.random() * 4,              // rotation duration (s)
+        scale: 0.6 + Math.random() * 0.6,                  // size variation
+        opacity: 0.5 + Math.random() * 0.4,                // opacity variation
+        swayDirection: Math.random() > 0.5 ? 1 : -1,
+        swayDuration: 1.5 + Math.random() * 2,             // sway duration (s)
+        startRotation: Math.random() * 360,                // initial rotation (deg)
+        blur: Math.random() > 0.7 ? 1 : 0                  // randomly blurred
+    }))
     return (
         <div
             className="absolute pointer-events-none"
             style={{
-                left: `${startLeft}%`,
+                left: `${props.startLeft}%`,
                 top: '-30px',
                 animationName: 'petalFall',
-                animationDuration: `${duration}s`,
-                animationDelay: `${delay}s`,
+                animationDuration: `${props.duration}s`,
+                animationDelay: `${props.delay}s`,
                 animationTimingFunction: 'ease-in',
                 animationFillMode: 'forwards',
                 opacity: 0,
@@ -53,11 +57,11 @@ function Petal({ index, total }) {
             <div
                 style={{
                     animationName: 'petalSway',
-                    animationDuration: `${1.5 + Math.random() * 2}s`,
+                    animationDuration: `${props.swayDuration}s`,
                     animationTimingFunction: 'ease-in-out',
                     animationIterationCount: 'infinite',
                     animationDirection: 'alternate',
-                    '--sway-amount': `${swayAmount * swayDirection}px`,
+                    '--sway-amount': `${props.swayAmount * props.swayDirection}px`,
                 }}
             >
                 <svg
@@ -65,18 +69,18 @@ function Petal({ index, total }) {
                     height="32"
                     viewBox="-5 -28 20 32"
                     style={{
-                        transform: `scale(${scale}) rotate(${Math.random() * 360}deg)`,
+                        transform: `scale(${props.scale}) rotate(${props.startRotation}deg)`,
                         animationName: 'petalSpin',
-                        animationDuration: `${rotationSpeed}s`,
+                        animationDuration: `${props.rotationSpeed}s`,
                         animationTimingFunction: 'linear',
                         animationIterationCount: 'infinite',
-                        filter: `blur(${Math.random() > 0.7 ? 1 : 0}px)`,
+                        filter: `blur(${props.blur}px)`,
                     }}
                 >
                     <path
                         d={path}
                         fill={color}
-                        opacity={opacity}
+                        opacity={props.opacity}
                     />
                 </svg>
             </div>
@@ -99,7 +103,7 @@ export default function PetalAnimation() {
     return (
         <div className="absolute inset-0 overflow-hidden pointer-events-none z-20">
             {Array.from({ length: petalCount }).map((_, i) => (
-                <Petal key={i} index={i} total={petalCount} />
+                <Petal key={i} index={i} />
             ))}
         </div>
     )
